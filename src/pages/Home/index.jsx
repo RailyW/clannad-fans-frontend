@@ -15,7 +15,6 @@ const Home = () => {
           <div className="top_main_logo">
             <h1 className="main-title">CLANNAD Fans Community</h1>
             <p className="subtitle">欢迎来到CLANNAD粉丝社区</p>
-            <div className="scroll-hint">↓ 滚动鼠标探索更多 ↓</div>
           </div>
         </div>
       )
@@ -25,19 +24,14 @@ const Home = () => {
       className: 'about_wrapper',
       content: (
         <div className="section-content">
-          <div className="about_title_text">
+          <div className="content-card">
             <h2 className="section-title">游戏介绍</h2>
-          </div>
-          <div className="about_box">
             <p className="section-description">CLANNAD是Key社制作的经典视觉小说游戏</p>
             <div className="content-placeholder">
               <div className="placeholder-item">故事背景</div>
               <div className="placeholder-item">角色介绍</div>
               <div className="placeholder-item">游戏特色</div>
             </div>
-          </div>
-          <div className="contents_footer" onClick={() => scrollToSection(currentSection + 1)}>
-            <span className="arrow-down">↓</span>
           </div>
         </div>
       )
@@ -47,10 +41,8 @@ const Home = () => {
       className: 'special_wrapper',
       content: (
         <div className="section-content">
-          <div className="special_title_text">
+          <div className="content-card">
             <h2 className="section-title">游戏资源</h2>
-          </div>
-          <div className="special_box">
             <p className="section-description">下载游戏相关资源和素材</p>
             <div className="content-placeholder">
               <div className="placeholder-item">游戏本体</div>
@@ -58,9 +50,6 @@ const Home = () => {
               <div className="placeholder-item">CG壁纸</div>
               <div className="placeholder-item">周边资源</div>
             </div>
-          </div>
-          <div className="contents_footer" onClick={() => scrollToSection(currentSection + 1)}>
-            <span className="arrow-down">↓</span>
           </div>
         </div>
       )
@@ -70,10 +59,8 @@ const Home = () => {
       className: 'story_wrapper',
       content: (
         <div className="section-content">
-          <div className="story_title_text">
+          <div className="content-card">
             <h2 className="section-title">游戏攻略</h2>
-          </div>
-          <div className="story_box">
             <p className="section-description">完整的游戏流程攻略和成就指南</p>
             <div className="content-placeholder">
               <div className="placeholder-item">主线攻略</div>
@@ -81,9 +68,6 @@ const Home = () => {
               <div className="placeholder-item">隐藏要素</div>
               <div className="placeholder-item">全成就指南</div>
             </div>
-          </div>
-          <div className="contents_footer" onClick={() => scrollToSection(currentSection + 1)}>
-            <span className="arrow-down">↓</span>
           </div>
         </div>
       )
@@ -93,19 +77,14 @@ const Home = () => {
       className: 'character_wrapper',
       content: (
         <div className="section-content">
-          <div className="character_title_text">
+          <div className="content-card">
             <h2 className="section-title">社区讨论</h2>
-          </div>
-          <div className="character_box">
             <p className="section-description">与其他玩家分享你的游戏体验</p>
             <div className="content-placeholder">
               <div className="placeholder-item">热门话题</div>
               <div className="placeholder-item">玩家心得</div>
               <div className="placeholder-item">二次创作</div>
             </div>
-          </div>
-          <div className="contents_footer" onClick={() => scrollToSection(currentSection + 1)}>
-            <span className="arrow-down">↓</span>
           </div>
         </div>
       )
@@ -115,18 +94,16 @@ const Home = () => {
       className: 'spec_wrapper',
       content: (
         <div className="section-content">
-          <div className="spec_box">
-            <div className="spec_title_text">
-              <h2 className="section-title">联系我们</h2>
-            </div>
+          <div className="content-card">
+            <h2 className="section-title">联系我们</h2>
             <p className="section-description">加入我们的社区，与更多玩家交流</p>
             <div className="content-placeholder">
               <div className="placeholder-item">官方QQ群</div>
               <div className="placeholder-item">Discord</div>
               <div className="placeholder-item">邮件联系</div>
             </div>
+            <div className="copyright">&copy; CLANNAD Fans Community</div>
           </div>
-          <div className="copyright">&copy; CLANNAD Fans Community</div>
         </div>
       )
     }
@@ -215,7 +192,7 @@ const Home = () => {
           transition: isScrolling ? 'transform 1s cubic-bezier(0.645, 0.045, 0.355, 1)' : 'none'
         }}
       >
-        {sections.map((section, index) => (
+        {sections.map((section) => (
           <section
             key={section.id}
             id={section.id}

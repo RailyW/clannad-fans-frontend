@@ -2,6 +2,7 @@
 import homeBackground from '../../assets/home-bg.png';
 import aboutBackground from '../../assets/about-bg.png';
 import characterBackground from '../../assets/character-bg.jpg';
+import albumBackground from '../../assets/album-bg.png';
 import musicBackground from '../../assets/music-bg.jpg';
 
 export const pageBackgrounds = {
@@ -18,7 +19,7 @@ export const pageBackgrounds = {
     overlay: 'rgba(0, 0, 0, 0.2)'
   },
   album: {
-    image: aboutBackground,
+    image: albumBackground,
     overlay: 'rgba(0, 0, 0, 0.2)'
   },
   about: {

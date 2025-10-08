@@ -20,7 +20,7 @@ const Home = () => {
   const containerRef = useRef(null);
 
   const sections = [
-    { id: '首页', component: <SectionWelcome />, background: pageBackgrounds.welcome },
+    { id: '首页', component: <SectionWelcome showIntro={showIntro} />, background: pageBackgrounds.welcome },
     { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
     { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.music },
     { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },

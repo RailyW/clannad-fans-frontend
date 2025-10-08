@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import './style.less';
 import SectionWelcome from "./SectionWelcome.jsx";
 import SectionAbout from "./SectionAbout.jsx";
@@ -11,11 +12,8 @@ import IntroOverlay from "../../components/IntroOverlay/index.jsx";
 
 const Home = () => {
   const [currentSection, setCurrentSection] = useState(0);
-  const [nextSection, setNextSection] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
-  const [backgroundTransitioning, setBackgroundTransitioning] = useState(false);
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
-  const [currentOverlay, setCurrentOverlay] = useState(pageBackgrounds.welcome.overlay); // 保存当前 overlay
   const [showIntro, setShowIntro] = useState(true); // 控制开场动画
   const containerRef = useRef(null);
 
@@ -27,26 +25,54 @@ const Home = () => {
     { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
   ], [showIntro]);
 
+  // 背景切换动画变体
+  const backgroundVariants = {
+    enter: (direction) => ({
+      y: direction === 'down' ? '100%' : '-100%',
+    }),
+    center: {
+      y: 0,
+    },
+    exit: (direction) => ({
+      y: direction === 'down' ? '-100%' : '100%',
+    }),
+  };
+
+  // Section 内容切换动画变体
+  const sectionVariants = {
+    enter: (direction) => ({
+      y: direction === 'down' ? '100%' : '-100%',
+      opacity: 0,
+    }),
+    center: {
+      y: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      y: direction === 'down' ? '-100%' : '100%',
+      opacity: 0,
+    }),
+  };
+
+  // 动画过渡配置
+  const transition = {
+    type: 'tween',
+    ease: [0.25, 0.46, 0.45, 0.94], // cubic-bezier
+    duration: 0.8,
+  };
+
   const scrollToSection = useCallback((index, direction) => {
     if (index >= 0 && index < sections.length && !isScrolling) {
       setIsScrolling(true);
       setScrollDirection(direction);
+      setCurrentSection(index);
 
-      // 立即开始背景和内容同步滚动
-      setNextSection(index);
-      setBackgroundTransitioning(true);
-
-      // 同时开始 overlay 过渡
-      setCurrentOverlay(sections[index].background.overlay);
-
-      // 800ms后完成切换
+      // 800ms后解除滚动锁定
       setTimeout(() => {
-        setCurrentSection(index);
-        setBackgroundTransitioning(false);
         setIsScrolling(false);
       }, 800);
     }
-  }, [isScrolling, sections]);
+  }, [isScrolling, sections.length]);
 
   const handleNavigate = (index) => {
     const direction = index > currentSection ? 'down' : 'up';
@@ -111,37 +137,32 @@ const Home = () => {
       {/* 开场遮罩动画 */}
       {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
 
-      {/* 当前背景 */}
-      <div
-        className={`page-background current ${backgroundTransitioning ? (scrollDirection === 'down' ? 'leaving-up' : 'leaving-down') : ''}`}
-        style={{
-          backgroundImage: `url(${sections[currentSection].background.image})`,
-        }}
-      >
-        <div
-          className="background-overlay"
+      {/* 背景层 - 使用 AnimatePresence 和 Motion */}
+      <AnimatePresence initial={false} custom={scrollDirection}>
+        <motion.div
+          key={`bg-${currentSection}`}
+          className="page-background"
           style={{
-            background: currentOverlay
+            backgroundImage: `url(${sections[currentSection].background.image})`,
           }}
-        ></div>
-      </div>
-
-      {/* 下一个背景 */}
-      {backgroundTransitioning && (
-        <div
-          className={`page-background next ${scrollDirection === 'down' ? 'coming-from-bottom' : 'coming-from-top'}`}
-          style={{
-            backgroundImage: `url(${sections[nextSection].background.image})`,
-          }}
+          custom={scrollDirection}
+          variants={backgroundVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={transition}
         >
-          <div
+          <motion.div
             className="background-overlay"
             style={{
-              background: sections[nextSection].background.overlay
+              background: sections[currentSection].background.overlay
             }}
-          ></div>
-        </div>
-      )}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+        </motion.div>
+      </AnimatePresence>
 
       {/* 顶部导航菜单 */}
       <TopNavigation
@@ -150,37 +171,32 @@ const Home = () => {
         onNavigate={handleNavigate}
       />
 
-      {/* 渲染所有 section，使用 CSS 控制显示和动画 */}
-      {sections.map((section, index) => {
-        let className = 'page-wrapper';
-
-        if (index === currentSection && !backgroundTransitioning) {
-          // 当前显示的section
-          className += ' active';
-        } else if (index === currentSection && backgroundTransitioning) {
-          // 正在离开的section
-          className += ' current ' + (scrollDirection === 'down' ? 'leaving-up' : 'leaving-down');
-        } else if (index === nextSection && backgroundTransitioning) {
-          // 正在进入的section
-          className += ' next ' + (scrollDirection === 'down' ? 'coming-from-bottom' : 'coming-from-top');
-        } else {
-          // 其他隐藏的section
-          className += ' hidden';
-        }
-
-        return (
-          <div key={section.id} className={className}>
-            {section.component}
-          </div>
-        );
-      })}
+      {/* Section 内容层 - 使用 AnimatePresence 和 Motion */}
+      <AnimatePresence initial={false} custom={scrollDirection}>
+        <motion.div
+          key={`section-${currentSection}`}
+          className="page-wrapper"
+          custom={scrollDirection}
+          variants={sectionVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={transition}
+        >
+          {sections[currentSection].component}
+        </motion.div>
+      </AnimatePresence>
 
       {/* 滚动进度条 */}
       <div className="scroll-progress">
-        <div
+        <motion.div
           className="progress-bar"
-          style={{ width: `${((currentSection + 1) / sections.length) * 100}%` }}
-        ></div>
+          animate={{ width: `${((currentSection + 1) / sections.length) * 100}%` }}
+          transition={{
+            duration: 0.8,
+            ease: [0.645, 0.045, 0.355, 1]
+          }}
+        />
       </div>
     </div>
   );

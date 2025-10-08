@@ -17,78 +17,12 @@
   background-position: center;
   background-repeat: no-repeat;
 
-  &.current {
-    z-index: 0;
-
-    // 向下滚动时，当前背景向上离开
-    &.leaving-up {
-      animation: slideUpAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    // 向上滚动时，当前背景向下离开
-    &.leaving-down {
-      animation: slideDownAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-  }
-
-  &.next {
-    z-index: 1;
-
-    // 从底部滚动上来
-    &.coming-from-bottom {
-      animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    // 从顶部滚动下来
-    &.coming-from-top {
-      animation: slideDownFromTop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-  }
-
   .background-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    transition: background 0.5s ease-in-out;
-  }
-}
-
-// 背景动画
-@keyframes slideUpFromBottom {
-  0% {
-    transform: translateY(100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideUpAndLeave {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-100%);
-  }
-}
-
-@keyframes slideDownFromTop {
-  0% {
-    transform: translateY(-100%);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideDownAndLeave {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(100%);
   }
 }
 
@@ -102,46 +36,7 @@
   justify-content: center;
   padding-top: 70px; // 为顶部导航栏留出空间
   box-sizing: border-box;
-
-  // 隐藏的section（不参与动画）
-  &.hidden {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  // 当前激活显示的section（无动画状态）
-  &.active {
-    z-index: 2;
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  &.current {
-    z-index: 2;
-
-    &.leaving-up {
-      animation: slideUpAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    &.leaving-down {
-      animation: slideDownAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-  }
-
-  &.next {
-    z-index: 3;
-
-    &.coming-from-bottom {
-      animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    &.coming-from-top {
-      animation: slideDownFromTop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-  }
+  z-index: 2;
 }
 
 // 滚动进度条
@@ -157,6 +52,5 @@
   .progress-bar {
     height: 100%;
     background: rgba(255, 255, 255, 0.6);
-    transition: width 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 }

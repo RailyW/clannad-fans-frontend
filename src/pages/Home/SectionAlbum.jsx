@@ -1,6 +1,6 @@
 import './style.less';
 
-const SectionGuide = () => {
+const SectionAlbum = () => {
   return (
     <div className="page-content">
       <h2 className="page-title">游戏攻略</h2>
@@ -15,5 +15,5 @@ const SectionGuide = () => {
   );
 };
 
-export default SectionGuide;
+export default SectionAlbum;
 

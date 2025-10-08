@@ -1,6 +1,6 @@
 import './style.less';
 
-const SectionResources = () => {
+const SectionMusic = () => {
   return (
     <div className="page-content">
       <h2 className="page-title">游戏资源</h2>
@@ -15,5 +15,5 @@ const SectionResources = () => {
   );
 };
 
-export default SectionResources;
+export default SectionMusic;
 

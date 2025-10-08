@@ -1,6 +1,6 @@
 import './style.less';
 
-const SectionCommunity = () => {
+const SectionCharacter = () => {
   return (
     <div className="page-content">
       <h2 className="page-title">社区讨论</h2>
@@ -14,5 +14,5 @@ const SectionCommunity = () => {
   );
 };
 
-export default SectionCommunity;
+export default SectionCharacter;
 

@@ -1,5 +1,5 @@
 // 每个页面的背景配置
-import backgroundImage from '../../assets/68417109_p1.jpg';
+import backgroundImage from '../../assets/home-bg.jpg';
 import homeBackground from '../../assets/home-background.png';
 
 export const pageBackgrounds = {

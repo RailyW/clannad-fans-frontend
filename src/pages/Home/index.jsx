@@ -2,10 +2,9 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import './style.less';
 import SectionWelcome from "./SectionWelcome.jsx";
 import SectionAbout from "./SectionAbout.jsx";
-import SectionResources from "./SectionResources.jsx";
-import SectionGuide from "./SectionGuide.jsx";
-import SectionCommunity from "./SectionCommunity.jsx";
-// import SectionContact from "./SectionContact.jsx";
+import SectionMusic from "./SectionMusic.jsx";
+import SectionAlbum from "./SectionAlbum.jsx";
+import SectionCharacter from "./SectionCharacter.jsx";
 import { pageBackgrounds } from './backgrounds.js';
 
 const Home = () => {
@@ -17,12 +16,11 @@ const Home = () => {
   const containerRef = useRef(null);
 
   const sections = [
-    { id: 'welcome', component: <SectionWelcome />, background: pageBackgrounds.welcome },
-    { id: 'about', component: <SectionAbout />, background: pageBackgrounds.about },
-    { id: 'resources', component: <SectionResources />, background: pageBackgrounds.resources },
-    { id: 'guide', component: <SectionGuide />, background: pageBackgrounds.guide },
-    { id: 'community', component: <SectionCommunity />, background: pageBackgrounds.community },
-    // { id: 'contact', component: <SectionContact />, background: pageBackgrounds.contact }
+    { id: '首页', component: <SectionWelcome />, background: pageBackgrounds.welcome },
+    { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.community },
+    { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.resources },
+    { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.guide },
+    { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
   ];
 
   const scrollToSection = useCallback((index, direction) => {

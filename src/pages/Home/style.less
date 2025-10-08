@@ -16,7 +16,34 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 0.8s ease-in-out;
+
+  &.current {
+    z-index: 0;
+
+    // 向下滚动时，当前背景向上离开
+    &.leaving-up {
+      animation: slideUpAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    // 向上滚动时，当前背景向下离开
+    &.leaving-down {
+      animation: slideDownAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+  }
+
+  &.next {
+    z-index: 1;
+
+    // 从底部滚动上来
+    &.coming-from-bottom {
+      animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    // 从顶部滚动下来
+    &.coming-from-top {
+      animation: slideDownFromTop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+  }
 
   .background-overlay {
     position: absolute;
@@ -24,7 +51,47 @@
     left: 0;
     width: 100%;
     height: 100%;
-    transition: background 0.8s ease-in-out;
+    transition: background 0.3s ease;
+  }
+}
+
+// 向下滚动：新背景从底部滚动上来
+@keyframes slideUpFromBottom {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+// 向下滚动：旧背景向上离开
+@keyframes slideUpAndLeave {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+// 向上滚动：新背景从顶部滚动下来
+@keyframes slideDownFromTop {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+// 向上滚动：旧背景向下离开
+@keyframes slideDownAndLeave {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
   }
 }
 
@@ -80,22 +147,39 @@
 
 // 页面内容包装器
 .page-wrapper {
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 100vh;
-  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1;
-  transition: opacity 0.6s ease-in-out;
 
-  &.hidden {
-    opacity: 0;
+  &.current {
+    z-index: 2;
+
+    // 向下滚动时，当前内容向上离开
+    &.leaving-up {
+      animation: slideUpAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    // 向上滚动时，当前内容向下离开
+    &.leaving-down {
+      animation: slideDownAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
   }
 
-  &.visible {
-    opacity: 1;
+  &.next {
+    z-index: 3;
+
+    // 从底部滚动上来
+    &.coming-from-bottom {
+      animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    // 从顶部滚动下来
+    &.coming-from-top {
+      animation: slideDownFromTop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
   }
 }
 

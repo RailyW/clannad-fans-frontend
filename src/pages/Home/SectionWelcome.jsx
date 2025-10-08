@@ -2,12 +2,9 @@ import './style.less';
 
 const SectionWelcome = () => {
   return (
-    <div className="page-content">
-      <div className="welcome-logo">
-        <h1 className="main-title">Clannad Fans</h1>
-        <p className="subtitle">欢迎来到我的CLANNAD资源站</p>
-      </div>
-    </div>
+    <>
+
+    </>
   );
 };
 

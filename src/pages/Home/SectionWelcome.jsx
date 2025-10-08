@@ -21,7 +21,7 @@ const SectionWelcome = ({ showIntro }) => {
 
     // IntroOverlay 已完成
     if (!hasAnimated) {
-      // 首次加载，稍微延迟后触发动画
+      // 首次加载，稍微延迟后触发动画s
       setTimeout(() => setShowClass('show'), 200);
       hasAnimated = true;
     } else {

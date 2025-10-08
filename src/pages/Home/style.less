@@ -55,7 +55,7 @@
   }
 }
 
-// 向下滚动：新背景从底部滚动上来
+// 背景动画
 @keyframes slideUpFromBottom {
   0% {
     transform: translateY(100%);
@@ -65,7 +65,6 @@
   }
 }
 
-// 向下滚动：旧背景向上离开
 @keyframes slideUpAndLeave {
   0% {
     transform: translateY(0);
@@ -75,7 +74,6 @@
   }
 }
 
-// 向上滚动：新背景从顶部滚动下来
 @keyframes slideDownFromTop {
   0% {
     transform: translateY(-100%);
@@ -85,7 +83,6 @@
   }
 }
 
-// 向上滚动：旧背景向下离开
 @keyframes slideDownAndLeave {
   0% {
     transform: translateY(0);
@@ -107,12 +104,10 @@
   &.current {
     z-index: 2;
 
-    // 向下滚动时，当前内容向上离开
     &.leaving-up {
       animation: slideUpAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
 
-    // 向上滚动时，当前内容向下离开
     &.leaving-down {
       animation: slideDownAndLeave 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
@@ -121,120 +116,14 @@
   &.next {
     z-index: 3;
 
-    // 从底部滚动上来
     &.coming-from-bottom {
       animation: slideUpFromBottom 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
 
-    // 从顶部滚动下来
     &.coming-from-top {
       animation: slideDownFromTop 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
   }
-}
-
-// 页面内容样式
-.page-content {
-  max-width: 1200px;
-  width: 90%;
-  text-align: center;
-  color: #fff;
-  padding: 40px;
-}
-
-// 欢迎页面特殊样式
-.welcome-logo {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  padding: 80px 60px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-  .main-title {
-    font-size: 4rem;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: #2c3e50;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-  }
-
-  .subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 0;
-    color: #34495e;
-  }
-}
-
-// 页面标题
-.page-title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  margin-bottom: 30px;
-  color: #fff;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-  position: relative;
-  display: inline-block;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 2px;
-  }
-}
-
-// 页面描述
-.page-description {
-  font-size: 1.3rem;
-  color: rgba(255, 255, 255, 0.95);
-  margin-bottom: 50px;
-  line-height: 1.8;
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-// 内容网格
-.content-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 25px;
-  margin-top: 50px;
-}
-
-// 内容项
-.content-item {
-  padding: 40px 30px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-  }
-}
-
-// 版权信息
-.copyright {
-  margin-top: 60px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1rem;
-  text-align: center;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 // 滚动进度条
@@ -251,55 +140,5 @@
     height: 100%;
     background: rgba(255, 255, 255, 0.6);
     transition: width 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-}
-
-// 响应式设计
-@media (max-width: 768px) {
-  .welcome-logo {
-    padding: 50px 30px;
-
-    .main-title {
-      font-size: 2.5rem;
-    }
-
-    .subtitle {
-      font-size: 1.1rem;
-    }
-  }
-
-  .page-title {
-    font-size: 2.5rem;
-  }
-
-  .page-description {
-    font-size: 1.1rem;
-    margin-bottom: 30px;
-  }
-
-  .content-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    margin-top: 30px;
-  }
-
-  .content-item {
-    padding: 30px 20px;
-    font-size: 1rem;
-  }
-
-  .copyright {
-    margin-top: 40px;
-    font-size: 0.9rem;
-  }
-}
-
-// 弹跳动画
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
   }
 }

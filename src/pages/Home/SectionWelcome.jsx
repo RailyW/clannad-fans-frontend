@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 import './SectionWelcome.less';
 
 const COLUMN_TEXTS = [
@@ -11,32 +12,50 @@ const COLUMN_TEXTS = [
 let hasAnimated = false;
 
 const SectionWelcome = ({ showIntro }) => {
-  const [showClass, setShowClass] = useState('');
+  const [showText, setShowText] = useState(false);
+  const [shouldPlayAnimation, setShouldPlayAnimation] = useState(false);
 
   useEffect(() => {
     // 如果开场动画还在显示，不做任何事
     if (showIntro) {
+      setShowText(false);
       return;
     }
 
     // 开场动画已完成
     if (!hasAnimated) {
-      // 首次加载，稍微延迟后触发动画
-      setTimeout(() => setShowClass('show'), 200);
+      // 首次加载，overlay 消失后再显示文字，并播放动画
+      setShouldPlayAnimation(true);
+      setShowText(true);
       hasAnimated = true;
     } else {
-      // 后续加载，直接显示
-      setShowClass('instant');
+      // 后续加载，直接显示，不播放动画
+      setShouldPlayAnimation(false);
+      setShowText(true);
     }
   }, [showIntro]);
 
   return (
-    <div className={`section-welcome ${showClass}`}>
+    <div className="section-welcome">
       <div className="text-columns">
         {COLUMN_TEXTS.map((text, idx) => (
-          <div className="column" key={idx}>
+          <motion.div
+            key={idx}
+            className="column"
+            initial={{ opacity: 0, y: 30 }}
+            animate={showText ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={
+              shouldPlayAnimation
+                ? {
+                    duration: 0.8,
+                    delay: idx * 0.8, // 逐句显示: 第1句0s开始，第2句0.8s开始，第3句1.6s开始
+                    ease: 'easeOut'
+                  }
+                : { duration: 0 } // 后续切换：立即显示
+            }
+          >
             {text}
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

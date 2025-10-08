@@ -34,14 +34,12 @@
         color: #2c3e50;
         margin-bottom: 20px;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        animation: fadeInDown 0.5s ease;
       }
 
       .character-description {
         font-size: 18px;
         line-height: 1.8;
         color: #34495e;
-        animation: fadeIn 0.8s ease;
       }
     }
   }
@@ -62,40 +60,7 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      animation: fadeInScale 0.6s ease;
       filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
-    }
-  }
-
-  // 动画定义
-  @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes fadeInScale {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
     }
   }
 }

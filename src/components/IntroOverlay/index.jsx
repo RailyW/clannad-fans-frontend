@@ -1,39 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { motion } from 'motion/react';
 import GameLogo from '../GameLogo/index.jsx';
 import './style.less';
 
 const IntroOverlay = ({ onComplete }) => {
-  const [stage, setStage] = useState('black'); // 'black' -> 'white' -> 'fade-out'
-
   useEffect(() => {
-    // 1秒后变为白色
-    const timer1 = setTimeout(() => {
-      setStage('white');
-    }, 1000);
-
-    // 2秒后开始淡出
-    const timer2 = setTimeout(() => {
-      setStage('fade-out');
-    }, 2000);
-
     // 3秒后完全消失，通知父组件
-    const timer3 = setTimeout(() => {
+    const timer = setTimeout(() => {
       onComplete();
     }, 3000);
 
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      clearTimeout(timer);
     };
   }, [onComplete]);
 
   return (
-    <div className={`intro-overlay ${stage}`}>
+    <motion.div
+      className="intro-overlay"
+      initial={{ backgroundColor: 'rgba(0, 0, 0, 1)', opacity: 1 }}
+      animate={{
+        backgroundColor: [
+          'rgba(0, 0, 0, 1)',      // 0-1s: 黑色
+          'rgba(0, 0, 0, 1)',      // 1s: 黑色保持
+          'rgba(255, 255, 255, 1)', // 1-2s: 变白色
+          'rgba(255, 255, 255, 1)', // 2s: 白色保持
+        ],
+        opacity: [1, 1, 1, 0] // 2-3s 最后1秒淡出
+      }}
+      transition={{
+        duration: 3,
+        times: [0, 0.33, 0.66, 1], // 0s, 1s, 2s, 3s
+        ease: 'easeInOut'
+      }}
+    >
       <div className="intro-logo">
         <GameLogo />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

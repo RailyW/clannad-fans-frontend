@@ -6,6 +6,7 @@ import SectionMusic from "./SectionMusic.jsx";
 import SectionAlbum from "./SectionAlbum.jsx";
 import SectionCharacter from "./SectionCharacter.jsx";
 import { pageBackgrounds } from './backgrounds.js';
+import TopNavigation from "../../components/TopNavigation/index.jsx";
 
 const Home = () => {
   const [currentSection, setCurrentSection] = useState(0);
@@ -40,6 +41,11 @@ const Home = () => {
       }, 800);
     }
   }, [sections.length, isScrolling]);
+
+  const handleNavigate = (index) => {
+    const direction = index > currentSection ? 'down' : 'up';
+    scrollToSection(index, direction);
+  };
 
   useEffect(() => {
     const handleWheel = (e) => {
@@ -125,20 +131,11 @@ const Home = () => {
       )}
 
       {/* 顶部导航菜单 */}
-      <nav className="left_menu_wrapper">
-        {sections.map((section, index) => (
-          <div
-            key={section.id}
-            className={`left_menu_box ${currentSection === index ? 'active' : ''}`}
-            onClick={() => {
-              const direction = index > currentSection ? 'down' : 'up';
-              scrollToSection(index, direction);
-            }}
-          >
-            <span className="menu-text">{section.id.toUpperCase()}</span>
-          </div>
-        ))}
-      </nav>
+      <TopNavigation
+        sections={sections}
+        currentSection={currentSection}
+        onNavigate={handleNavigate}
+      />
 
       {/* 当前内容 - 跟随背景一起滚动 */}
       <div

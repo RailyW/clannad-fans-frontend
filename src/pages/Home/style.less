@@ -95,56 +95,6 @@
   }
 }
 
-// 顶部横向导航菜单
-.left_menu_wrapper {
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 100;
-  display: flex;
-  flex-direction: row;
-  gap: 15px;
-
-  .left_menu_box {
-    width: 120px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    overflow: hidden;
-
-    .menu-text {
-      color: rgba(44, 62, 80, 0.8);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
-
-    &:hover {
-      background: rgba(255, 255, 255, 0.85);
-      border-color: rgba(255, 255, 255, 0.9);
-    }
-
-    &.active {
-      background: rgba(255, 255, 255, 0.95);
-      border-color: rgba(255, 255, 255, 1);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-
-      .menu-text {
-        color: rgba(44, 62, 80, 1);
-        font-weight: 600;
-      }
-    }
-  }
-}
-
 // 页面内容包装器
 .page-wrapper {
   position: fixed;
@@ -306,22 +256,6 @@
 
 // 响应式设计
 @media (max-width: 768px) {
-  .left_menu_wrapper {
-    top: 15px;
-    gap: 8px;
-    flex-wrap: wrap;
-    max-width: 90%;
-
-    .left_menu_box {
-      width: 100px;
-      height: 35px;
-
-      .menu-text {
-        font-size: 10px;
-      }
-    }
-  }
-
   .welcome-logo {
     padding: 50px 30px;
 

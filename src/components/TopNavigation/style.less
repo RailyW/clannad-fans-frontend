@@ -1,0 +1,117 @@
+// 顶部导航栏 - 全宽布局
+.top-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 30px;
+  pointer-events: none; // 让背景部分不阻挡鼠标事件
+}
+
+// Logo 容器 - 固定在左上角
+.logo-container {
+  position: absolute;
+  left: 30px;
+  top: 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  pointer-events: auto; // 恢复 Logo 的鼠标事件
+
+  img {
+    max-height: 25px;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+// 导航菜单 - 居中显示
+.nav-menu {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  flex-wrap: nowrap;
+  pointer-events: auto; // 恢复菜单的鼠标事件
+}
+
+// 导航菜单项
+.nav-menu-item {
+  height: 40px;
+  min-width: 80px;
+  padding: 0 20px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .menu-text {
+    color: rgba(44, 62, 80, 0.8);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.85);
+    border-color: rgba(255, 255, 255, 0.9);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+    .menu-text {
+      color: rgba(44, 62, 80, 1);
+      font-weight: 600;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .top-navigation {
+    padding: 10px 15px;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .logo-container {
+    position: static;
+    height: 40px;
+    margin: 0 auto;
+
+    img {
+      max-height: 40px;
+    }
+  }
+
+  .nav-menu {
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-menu-item {
+    height: 35px;
+    min-width: 60px;
+    padding: 0 15px;
+
+    .menu-text {
+      font-size: 12px;
+    }
+  }
+}

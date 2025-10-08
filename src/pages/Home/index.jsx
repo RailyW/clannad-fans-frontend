@@ -17,11 +17,12 @@ const Home = () => {
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
   const [showIntro, setShowIntro] = useState(true); // 控制开场动画
   const [currentOverlay, setCurrentOverlay] = useState(pageBackgrounds.welcome.overlay); // 保存当前 overlay
+  const [selectedCharacterId, setSelectedCharacterId] = useState('nagisa'); // 保存选中的角色ID
   const containerRef = useRef(null);
 
   const sections = [
     { id: '首页', component: <SectionWelcome showIntro={showIntro} />, background: pageBackgrounds.welcome },
-    { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
+    { id: '角色', component: <SectionCharacter selectedCharacterId={selectedCharacterId} onCharacterChange={setSelectedCharacterId} />, background: pageBackgrounds.character },
     { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.music },
     { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
     { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },

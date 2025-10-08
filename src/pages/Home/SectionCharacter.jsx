@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import './SectionCharacter.less';
 
 // 人物数据配置
@@ -25,9 +25,11 @@ const characters = [
   { id: 'sonota', name: '其他', avatar: new URL('../../assets/character-avatar/_system_vo_sonota_ZH.png', import.meta.url).href, description: '其他角色' },
 ];
 
-const SectionCharacter = () => {
-  const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
+const SectionCharacter = ({ selectedCharacterId, onCharacterChange }) => {
   const carouselRef = useRef(null);
+
+  // 根据 ID 找到当前选中的角色对象
+  const selectedCharacter = characters.find(char => char.id === selectedCharacterId) || characters[0];
 
   // 阻止轮播区域的滚轮事件冒泡
   useEffect(() => {
@@ -56,6 +58,10 @@ const SectionCharacter = () => {
     };
   }, []);
 
+  const handleCharacterClick = (character) => {
+    onCharacterChange(character.id);
+  };
+
   return (
     <div className="section-character">
       {/* 左侧信息区域 */}
@@ -83,7 +89,7 @@ const SectionCharacter = () => {
             <div
               key={character.id}
               className={`avatar-item ${character.id === selectedCharacter.id ? 'active' : ''}`}
-              onClick={() => setSelectedCharacter(character)}
+              onClick={() => handleCharacterClick(character)}
               title={character.name}
             >
               <img src={character.avatar} alt={character.name} />

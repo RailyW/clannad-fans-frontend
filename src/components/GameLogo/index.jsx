@@ -1,5 +1,5 @@
-import logoEN from '../../assets/CLANNAD-logo-EN.png'
-import logoJP from '../../assets/CLANNAD-logo-JP.png'
+import logoEN from '../../assets/logo/CLANNAD-logo-EN.png'
+import logoJP from '../../assets/logo/CLANNAD-logo-JP.png'
 
 const GameLogo = () => {
   return (

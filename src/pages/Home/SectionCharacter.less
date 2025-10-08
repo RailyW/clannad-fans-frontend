@@ -2,7 +2,16 @@
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+  position: relative;
+
+  // 主内容区域容器
+  .content-wrapper {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
 
   // 左侧信息区域 - 固定宽度60%
   .info-area {
@@ -11,12 +20,29 @@
     background: rgba(220, 200, 180, 0.3);
     display: flex;
     flex-direction: column;
-    overflow: hidden; // 防止内容溢出
+    overflow: hidden;
+    padding: 40px;
+    box-sizing: border-box;
 
     .character-details {
       flex: 1;
       overflow: auto;
-      // 详细信息区域样式稍后添加
+
+      .character-name {
+        font-size: 42px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        animation: fadeInDown 0.5s ease;
+      }
+
+      .character-description {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #34495e;
+        animation: fadeIn 0.8s ease;
+      }
     }
   }
 
@@ -25,5 +51,149 @@
     flex: 0 0 40%;
     width: 40%;
     background: rgba(180, 200, 220, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+
+    .character-illustration {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      animation: fadeInScale 0.6s ease;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    }
+  }
+
+  // 底部头像轮播容器
+  .avatar-carousel-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+
+    backdrop-filter: blur(3px);
+    padding: 10px 20px;
+    box-sizing: border-box;
+    z-index: 10;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+
+    .avatar-carousel {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      height: 100%;
+      align-items: center;
+      padding: 0 10px;
+
+      // 自定义滚动条样式
+      &::-webkit-scrollbar {
+        height: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 3px;
+        transition: background 0.3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      .avatar-item {
+        flex-shrink: 0;
+        width: 164px;
+        height: 60px;
+        cursor: pointer;
+        border: 3px solid transparent;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        background: rgba(255, 255, 255, 0.5);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.3s ease;
+        }
+
+        // 悬停效果
+        &:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+          img {
+            transform: scale(1.05);
+          }
+        }
+
+        // 选中状态
+        &.active {
+          border-color: #ffd700;
+          box-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 6px 16px rgba(255, 215, 0, 0.3);
+          transform: translateY(-8px);
+          background: rgba(255, 255, 255, 0.9);
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+            pointer-events: none;
+          }
+        }
+      }
+    }
+  }
+
+  // 动画定义
+  @keyframes fadeInDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInScale {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 }

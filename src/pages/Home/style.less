@@ -103,6 +103,22 @@
   padding-top: 70px; // 为顶部导航栏留出空间
   box-sizing: border-box;
 
+  // 隐藏的section（不参与动画）
+  &.hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  // 当前激活显示的section（无动画状态）
+  &.active {
+    z-index: 2;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   &.current {
     z-index: 2;
 

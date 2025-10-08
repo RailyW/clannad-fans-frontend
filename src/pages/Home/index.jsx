@@ -47,7 +47,7 @@ const Home = () => {
         setIsScrolling(false);
       }, 800);
     }
-  }, [sections, isScrolling]);
+  }, [isScrolling]); // 移除 sections 依赖，因为它是固定的
 
   const handleNavigate = (index) => {
     const direction = index > currentSection ? 'down' : 'up';
@@ -151,21 +151,30 @@ const Home = () => {
         onNavigate={handleNavigate}
       />
 
-      {/* 当前内容 - 跟随背景一起滚动 */}
-      <div
-        className={`page-wrapper current ${backgroundTransitioning ? (scrollDirection === 'down' ? 'leaving-up' : 'leaving-down') : ''}`}
-      >
-        {sections[currentSection].component}
-      </div>
+      {/* 渲染所有 section，使用 CSS 控制显示和动画 */}
+      {sections.map((section, index) => {
+        let className = 'page-wrapper';
 
-      {/* 下一个内容 - 跟随背景一起滚动进入 */}
-      {backgroundTransitioning && (
-        <div
-          className={`page-wrapper next ${scrollDirection === 'down' ? 'coming-from-bottom' : 'coming-from-top'}`}
-        >
-          {sections[nextSection].component}
-        </div>
-      )}
+        if (index === currentSection && !backgroundTransitioning) {
+          // 当前显示的section
+          className += ' active';
+        } else if (index === currentSection && backgroundTransitioning) {
+          // 正在离开的section
+          className += ' current ' + (scrollDirection === 'down' ? 'leaving-up' : 'leaving-down');
+        } else if (index === nextSection && backgroundTransitioning) {
+          // 正在进入的section
+          className += ' next ' + (scrollDirection === 'down' ? 'coming-from-bottom' : 'coming-from-top');
+        } else {
+          // 其他隐藏的section
+          className += ' hidden';
+        }
+
+        return (
+          <div key={section.id} className={className}>
+            {section.component}
+          </div>
+        );
+      })}
 
       {/* 滚动进度条 */}
       <div className="scroll-progress">

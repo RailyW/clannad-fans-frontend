@@ -5,7 +5,7 @@ import SectionAbout from "./SectionAbout.jsx";
 import SectionMusic from "./SectionMusic.jsx";
 import SectionAlbum from "./SectionAlbum.jsx";
 import SectionCharacter from "./SectionCharacter.jsx";
-import { pageBackgrounds } from './backgrounds.js';
+import { pageBackgrounds } from './data/HomeBackground.js';
 import TopNavigation from "../../components/TopNavigation/index.jsx";
 import IntroOverlay from "../../components/IntroOverlay/index.jsx";
 

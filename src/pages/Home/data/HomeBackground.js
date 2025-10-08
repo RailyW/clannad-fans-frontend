@@ -1,9 +1,9 @@
 // 每个页面的背景配置
-import homeBackground from '../../assets/home-section-bg/home-bg.png';
-import aboutBackground from '../../assets/home-section-bg/about-bg.png';
-import characterBackground from '../../assets/home-section-bg/character-bg.png';
-import albumBackground from '../../assets/home-section-bg/album-bg.png';
-import musicBackground from '../../assets/home-section-bg/music-bg.jpg';
+import homeBackground from '../../../assets/home-section-bg/home-bg.png';
+import aboutBackground from '../../../assets/home-section-bg/about-bg.png';
+import characterBackground from '../../../assets/home-section-bg/character-bg.png';
+import albumBackground from '../../../assets/home-section-bg/album-bg.png';
+import musicBackground from '../../../assets/home-section-bg/music-bg.jpg';
 
 export const pageBackgrounds = {
   welcome: {

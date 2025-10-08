@@ -5,6 +5,7 @@ import CharacterCarousel from '../../components/CharacterCarousel/index.jsx';
 import { characters } from './data/CharacterInfo.js';
 
 const SectionCharacter = () => {
+  // 状态现在可以安全地保存在组件内部，因为组件不会被卸载
   const [selectedCharacterId, setSelectedCharacterId] = useState('nagisa');
 
   // 根据 ID 找到当前选中的角色对象

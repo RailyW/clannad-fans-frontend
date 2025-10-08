@@ -171,21 +171,39 @@ const Home = () => {
         onNavigate={handleNavigate}
       />
 
-      {/* Section 内容层 - 使用 AnimatePresence 和 Motion */}
-      <AnimatePresence initial={false} custom={scrollDirection}>
-        <motion.div
-          key={`section-${currentSection}`}
-          className="page-wrapper"
-          custom={scrollDirection}
-          variants={sectionVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={transition}
-        >
-          {sections[currentSection].component}
-        </motion.div>
-      </AnimatePresence>
+      {/* Section 内容层 - 渲染所有 section 并保持挂载 */}
+      {sections.map((section, index) => {
+        // 根据当前位置和滚动方向计算动画状态
+        let animateState = "center";
+        if (index !== currentSection) {
+          // 如果是非当前section，根据位置关系决定动画状态
+          if (scrollDirection === 'down') {
+            // 向下滚动：已经看过的在上面（exit向上），还没看的在下面（enter从下面来）
+            animateState = index < currentSection ? "exit" : "enter";
+          } else {
+            // 向上滚动：已经看过的在下面（exit向下），还没看的在上面（enter从上面来）
+            animateState = index > currentSection ? "exit" : "enter";
+          }
+        }
+
+        return (
+          <motion.div
+            key={`section-${section.id}`}
+            className="page-wrapper"
+            custom={scrollDirection}
+            variants={sectionVariants}
+            initial={false}
+            animate={animateState}
+            transition={transition}
+            style={{
+              pointerEvents: index === currentSection ? 'auto' : 'none',
+              zIndex: index === currentSection ? 1 : 0,
+            }}
+          >
+            {section.component}
+          </motion.div>
+        );
+      })}
 
       {/* 滚动进度条 */}
       <div className="scroll-progress">

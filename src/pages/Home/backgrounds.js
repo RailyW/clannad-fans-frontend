@@ -5,26 +5,26 @@ import homeBackground from '../../assets/home-background.png';
 export const pageBackgrounds = {
   welcome: {
     image: backgroundImage,
-    overlay: 'rgba(0, 0, 0, 0.3)'
+    overlay: 'rgba(0, 0, 0, 0)'
   },
   about: {
     image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0.4)'
+    overlay: 'rgba(0, 0, 0, 0)'
   },
   resources: {
     image: backgroundImage,
-    overlay: 'rgba(0, 0, 0, 0.5)'
+    overlay: 'rgba(0, 0, 0, 0)'
   },
   guide: {
     image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0.45)'
+    overlay: 'rgba(0, 0, 0, 0)'
   },
   community: {
     image: backgroundImage,
-    overlay: 'rgba(0, 0, 0, 0.4)'
+    overlay: 'rgba(0, 0, 0, 0)'
   },
   contact: {
     image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0.35)'
+    overlay: 'rgba(0, 0, 0, 0)'
   }
 };

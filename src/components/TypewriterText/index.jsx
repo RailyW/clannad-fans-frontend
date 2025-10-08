@@ -6,54 +6,58 @@ const TypewriterText = ({ text, className, delay = 0, speed = 0.05, deleteSpeed 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const prevTextRef = useRef('');
+  const [newText, setNewText] = useState(text);
 
+  // 监听文本变化
   useEffect(() => {
-    // 如果文本改变，先删除旧文本
-    if (prevTextRef.current && prevTextRef.current !== text && displayedText.length > 0) {
-      setIsDeleting(true);
-    } else if (prevTextRef.current !== text) {
-      // 如果是第一次或者已经删除完毕，开始打字
+    if (!prevTextRef.current) {
+      // 第一次初始化
+      prevTextRef.current = text;
       setDisplayedText('');
       setCurrentIndex(0);
-      setIsDeleting(false);
-      prevTextRef.current = text;
+      setNewText(text);
+    } else if (prevTextRef.current !== text) {
+      // 文本改变了
+      setNewText(text);
+      if (displayedText.length > 0) {
+        // 有旧文本，需要先删除
+        setIsDeleting(true);
+      } else {
+        // 没有旧文本，直接开始打字新文本
+        prevTextRef.current = text;
+        setCurrentIndex(0);
+        setIsDeleting(false);
+      }
     }
-  }, [text]);
+  }, [text, displayedText.length]);
 
   // 删除效果
   useEffect(() => {
-    if (isDeleting && displayedText.length > 0) {
-      const timer = setTimeout(() => {
-        setDisplayedText((prev) => prev.slice(0, -1));
-      }, deleteSpeed * 1000);
-
-      return () => clearTimeout(timer);
-    } else if (isDeleting && displayedText.length === 0) {
-      // 删除完毕，开始打字新文本
-      setIsDeleting(false);
-      setCurrentIndex(0);
-      prevTextRef.current = text;
-
-      // 添加延迟后开始打字
-      const delayTimer = setTimeout(() => {
+    if (isDeleting) {
+      if (displayedText.length > 0) {
+        const timer = setTimeout(() => {
+          setDisplayedText((prev) => prev.slice(0, -1));
+        }, deleteSpeed * 1000);
+        return () => clearTimeout(timer);
+      } else {
+        // 删除完毕，准备开始打字新文本
+        setIsDeleting(false);
+        prevTextRef.current = newText;
         setCurrentIndex(0);
-      }, delay * 1000);
-
-      return () => clearTimeout(delayTimer);
+      }
     }
-  }, [isDeleting, displayedText, deleteSpeed, delay, text]);
+  }, [isDeleting, displayedText, deleteSpeed, newText]);
 
   // 打字效果
   useEffect(() => {
-    if (!isDeleting && currentIndex < text.length) {
+    if (!isDeleting && prevTextRef.current === newText && currentIndex < newText.length) {
       const timer = setTimeout(() => {
-        setDisplayedText((prev) => prev + text[currentIndex]);
+        setDisplayedText((prev) => prev + newText[currentIndex]);
         setCurrentIndex((prev) => prev + 1);
       }, speed * 1000);
-
       return () => clearTimeout(timer);
     }
-  }, [currentIndex, text, speed, isDeleting]);
+  }, [currentIndex, newText, speed, isDeleting]);
 
   return (
     <motion.span
@@ -62,7 +66,7 @@ const TypewriterText = ({ text, className, delay = 0, speed = 0.05, deleteSpeed 
       animate={{ opacity: 1 }}
     >
       {displayedText}
-      {(currentIndex < text.length || isDeleting) && (
+      {((isDeleting && displayedText.length > 0) || (!isDeleting && currentIndex < newText.length)) && (
         <motion.span
           className="typewriter-cursor"
           animate={{ opacity: [1, 0] }}

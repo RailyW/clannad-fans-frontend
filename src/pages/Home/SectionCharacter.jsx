@@ -31,22 +31,13 @@ const SectionCharacter = () => {
           {/* 左侧信息区域 */}
           <div className="info-area">
             <div className="character-details">
-              <AnimatePresence mode="wait">
-                <motion.h2
-                  key={`name-${selectedCharacter.id}`}
-                  className="character-name"
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 1 }}
-                  transition={{ duration: 0 }}
-                >
-                  <TypewriterText
-                    text={selectedCharacter.name}
-                    speed={0.08}
-                    deleteSpeed={0.05}
-                  />
-                </motion.h2>
-              </AnimatePresence>
+              <h2 className="character-name">
+                <TypewriterText
+                  text={selectedCharacter.name}
+                  speed={0.08}
+                  deleteSpeed={0.05}
+                />
+              </h2>
 
               <AnimatePresence mode="wait">
                 <motion.p

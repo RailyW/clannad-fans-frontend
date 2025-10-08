@@ -1,6 +1,4 @@
 import './SectionCharacter.less';
-import CharacterSelector from '../../components/CharacterSelector';
-import { useState } from 'react';
 
 const SectionCharacter = () => {
   return (

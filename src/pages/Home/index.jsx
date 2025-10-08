@@ -7,6 +7,7 @@ import SectionAlbum from "./SectionAlbum.jsx";
 import SectionCharacter from "./SectionCharacter.jsx";
 import { pageBackgrounds } from './backgrounds.js';
 import TopNavigation from "../../components/TopNavigation/index.jsx";
+import IntroOverlay from "../../components/IntroOverlay/index.jsx";
 
 const Home = () => {
   const [currentSection, setCurrentSection] = useState(0);
@@ -14,6 +15,7 @@ const Home = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [backgroundTransitioning, setBackgroundTransitioning] = useState(false);
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
+  const [showIntro, setShowIntro] = useState(true); // 控制开场动画
   const containerRef = useRef(null);
 
   const sections = [
@@ -45,6 +47,10 @@ const Home = () => {
   const handleNavigate = (index) => {
     const direction = index > currentSection ? 'down' : 'up';
     scrollToSection(index, direction);
+  };
+
+  const handleIntroComplete = () => {
+    setShowIntro(false);
   };
 
   useEffect(() => {
@@ -98,6 +104,9 @@ const Home = () => {
 
   return (
     <div className="home-container" ref={containerRef}>
+      {/* 开场遮罩动画 */}
+      {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
+
       {/* 当前背景 */}
       <div
         className={`page-background current ${backgroundTransitioning ? (scrollDirection === 'down' ? 'leaving-up' : 'leaving-down') : ''}`}

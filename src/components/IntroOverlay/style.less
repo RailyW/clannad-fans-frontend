@@ -1,0 +1,42 @@
+// 开场遮罩动画
+.intro-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 1s ease-in-out;
+
+  // 黑色阶段
+  &.black {
+    background-color: rgba(0, 0, 0, 1);
+  }
+
+  // 白色阶段
+  &.white {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  // 淡出阶段
+  &.fade-out {
+    background-color: rgba(255, 255, 255, 1);
+    opacity: 0;
+  }
+}
+
+// Logo 容器
+.intro-logo {
+  max-width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}

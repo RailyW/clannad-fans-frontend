@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import './SectionWelcome.less';
+import SnowEffect from '../../components/SnowEffect/index.jsx';
 
 const COLUMN_TEXTS = [
   '让我带你去吧，',
@@ -37,6 +38,9 @@ const SectionWelcome = ({ showIntro }) => {
 
   return (
     <div className="section-welcome">
+      {/* 下雪特效 */}
+      <SnowEffect count={15} />
+
       <div className="text-columns">
         {COLUMN_TEXTS.map((text, idx) => (
           <motion.div

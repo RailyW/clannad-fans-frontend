@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import './SectionCharacter.less';
 import CharacterCarousel from '../../components/CharacterCarousel/index.jsx';
 import CharacterCard from '../../components/CharacterCard/index.jsx';
+import TypewriterText from '../../components/TypewriterText/index.jsx';
 import { characters } from './data/CharacterInfo.js';
 
 const SectionCharacter = () => {
@@ -34,12 +35,16 @@ const SectionCharacter = () => {
                 <motion.h2
                   key={`name-${selectedCharacter.id}`}
                   className="character-name"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                  initial={{ opacity: 1 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 1 }}
+                  transition={{ duration: 0 }}
                 >
-                  {selectedCharacter.name}
+                  <TypewriterText
+                    text={selectedCharacter.name}
+                    speed={0.08}
+                    deleteSpeed={0.05}
+                  />
                 </motion.h2>
               </AnimatePresence>
 

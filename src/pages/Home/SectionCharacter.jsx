@@ -1,5 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import { useState } from 'react';
 import './SectionCharacter.less';
+import CharacterCarousel from '../../components/CharacterCarousel/index.jsx';
 
 // 人物数据配置
 const characters = [
@@ -26,38 +27,10 @@ const characters = [
 ];
 
 const SectionCharacter = () => {
-  const carouselRef = useRef(null);
   const [selectedCharacterId, setSelectedCharacterId] = useState('nagisa');
 
   // 根据 ID 找到当前选中的角色对象
   const selectedCharacter = characters.find(char => char.id === selectedCharacterId) || characters[0];
-
-  // 阻止轮播区域的滚轮事件冒泡
-  useEffect(() => {
-    const carouselContainer = carouselRef.current;
-
-    const handleWheel = (e) => {
-      const carousel = e.currentTarget.querySelector('.avatar-carousel');
-      if (!carousel) return;
-
-      e.stopPropagation();
-      carousel.scrollLeft += e.deltaY;
-    };
-
-    if (carouselContainer) {
-      carouselContainer.addEventListener('wheel', handleWheel, { passive: false });
-    }
-
-    return () => {
-      if (carouselContainer) {
-        carouselContainer.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, []);
-
-  const handleCharacterClick = (character) => {
-    setSelectedCharacterId(character.id);
-  };
 
   return (
     <div className="section-character">
@@ -80,20 +53,11 @@ const SectionCharacter = () => {
       </div>
 
       {/* 底部头像轮播区域 */}
-      <div className="avatar-carousel-container" ref={carouselRef}>
-        <div className="avatar-carousel">
-          {characters.map((character) => (
-            <div
-              key={character.id}
-              className={`avatar-item ${character.id === selectedCharacter.id ? 'active' : ''}`}
-              onClick={() => handleCharacterClick(character)}
-              title={character.name}
-            >
-              <img src={character.avatar} alt={character.name} />
-            </div>
-          ))}
-        </div>
-      </div>
+      <CharacterCarousel
+        characters={characters}
+        selectedCharacterId={selectedCharacterId}
+        onCharacterSelect={setSelectedCharacterId}
+      />
     </div>
   );
 };

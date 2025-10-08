@@ -10,20 +10,25 @@ const COLUMN_TEXTS = [
 // 模块级变量，记录是否已经播放过动画
 let hasAnimated = false;
 
-const SectionWelcome = () => {
+const SectionWelcome = ({ showIntro }) => {
   const [showClass, setShowClass] = useState('');
 
   useEffect(() => {
-    // 首次加载时触发动画
+    // 如果开场动画还在显示，不做任何事
+    if (showIntro) {
+      return;
+    }
+
+    // 开场动画已完成
     if (!hasAnimated) {
-      // 等待开场动画完成后再显示（假设开场动画大约需要 2-3 秒）
-      setTimeout(() => setShowClass('show'), 2500);
+      // 首次加载，稍微延迟后触发动画
+      setTimeout(() => setShowClass('show'), 200);
       hasAnimated = true;
     } else {
       // 后续加载，直接显示
       setShowClass('instant');
     }
-  }, []);
+  }, [showIntro]);
 
   return (
     <div className={`section-welcome ${showClass}`}>

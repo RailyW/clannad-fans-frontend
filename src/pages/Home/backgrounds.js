@@ -1,7 +1,7 @@
 // 每个页面的背景配置
 import homeBackground from '../../assets/home-bg.png';
 import aboutBackground from '../../assets/about-bg.png';
-import characterBackground from '../../assets/character-bg.jpg';
+import characterBackground from '../../assets/character-bg.png';
 import albumBackground from '../../assets/album-bg.png';
 import musicBackground from '../../assets/music-bg.jpg';
 

@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './style.less';
+import SectionWelcome from "./SectionWelcome.jsx";
+import SectionAbout from "./SectionAbout.jsx";
 
 const Home = () => {
   const [currentSection, setCurrentSection] = useState(0);
@@ -10,33 +12,12 @@ const Home = () => {
     {
       id: 'welcome',
       className: 'top_wrapper',
-      content: (
-        <div className="section-content">
-          <div className="top_main_logo">
-            <h1 className="main-title">CLANNAD Fans Community</h1>
-            <p className="subtitle">欢迎来到CLANNAD粉丝社区</p>
-          </div>
-        </div>
-      )
+      content: <SectionWelcome />,
     },
     {
       id: 'about',
       className: 'about_wrapper',
-      content: (
-        <div className="section-content">
-          <div className="content-card">
-            <h2 className="section-title">游戏介绍</h2>
-            <div className="card-scrollable-content">
-              <p className="section-description">CLANNAD是Key社制作的经典视觉小说游戏</p>
-              <div className="content-placeholder">
-                <div className="placeholder-item">故事背景</div>
-                <div className="placeholder-item">角色介绍</div>
-                <div className="placeholder-item">游戏特色</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
+      content: <SectionAbout />,
     },
     {
       id: 'resources',

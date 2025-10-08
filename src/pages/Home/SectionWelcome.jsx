@@ -3,9 +3,9 @@ import { motion } from 'motion/react';
 import './SectionWelcome.less';
 
 const COLUMN_TEXTS = [
-  '如果您愿意的话，',
-  '让我带您去吧，',
-  '这座小镇愿望实现的地方...'
+  '让我带你去吧，',
+  '这座小镇，',
+  '实现愿望的地方。'
 ];
 
 // 模块级变量，记录是否已经播放过动画

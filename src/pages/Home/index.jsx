@@ -16,13 +16,14 @@ const Home = () => {
   const [backgroundTransitioning, setBackgroundTransitioning] = useState(false);
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
   const [showIntro, setShowIntro] = useState(true); // 控制开场动画
+  const [currentOverlay, setCurrentOverlay] = useState(pageBackgrounds.welcome.overlay); // 保存当前 overlay
   const containerRef = useRef(null);
 
   const sections = [
     { id: '首页', component: <SectionWelcome />, background: pageBackgrounds.welcome },
-    { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.community },
-    { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.resources },
-    { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.guide },
+    { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
+    { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.music },
+    { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
     { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
   ];
 
@@ -35,6 +36,9 @@ const Home = () => {
       setNextSection(index);
       setBackgroundTransitioning(true);
 
+      // 同时开始 overlay 过渡
+      setCurrentOverlay(sections[index].background.overlay);
+
       // 800ms后完成切换
       setTimeout(() => {
         setCurrentSection(index);
@@ -42,7 +46,7 @@ const Home = () => {
         setIsScrolling(false);
       }, 800);
     }
-  }, [sections.length, isScrolling]);
+  }, [sections, isScrolling]);
 
   const handleNavigate = (index) => {
     const direction = index > currentSection ? 'down' : 'up';
@@ -117,7 +121,7 @@ const Home = () => {
         <div
           className="background-overlay"
           style={{
-            background: sections[currentSection].background.overlay
+            background: currentOverlay
           }}
         ></div>
       </div>

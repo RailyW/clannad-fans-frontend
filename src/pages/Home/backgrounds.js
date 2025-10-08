@@ -1,30 +1,28 @@
 // 每个页面的背景配置
-import backgroundImage from '../../assets/home-bg.jpg';
-import homeBackground from '../../assets/home-background.png';
+import homeBackground from '../../assets/home-bg.png';
+import aboutBackground from '../../assets/about-bg.png';
+import characterBackground from '../../assets/character-bg.jpg';
+import musicBackground from '../../assets/music-bg.jpg';
 
 export const pageBackgrounds = {
   welcome: {
-    image: backgroundImage,
+    image: homeBackground,
     overlay: 'rgba(0, 0, 0, 0)'
+  },
+  character: {
+    image: characterBackground,
+    overlay: 'rgba(0, 0, 0, 0.2)'
+  },
+  music: {
+    image: musicBackground,
+    overlay: 'rgba(0, 0, 0, 0.2)'
+  },
+  album: {
+    image: aboutBackground,
+    overlay: 'rgba(0, 0, 0, 0.2)'
   },
   about: {
-    image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0)'
+    image: aboutBackground,
+    overlay: 'rgba(0, 0, 0, 0.2)'
   },
-  resources: {
-    image: backgroundImage,
-    overlay: 'rgba(0, 0, 0, 0)'
-  },
-  guide: {
-    image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0)'
-  },
-  community: {
-    image: backgroundImage,
-    overlay: 'rgba(0, 0, 0, 0)'
-  },
-  contact: {
-    image: homeBackground,
-    overlay: 'rgba(0, 0, 0, 0)'
-  }
 };

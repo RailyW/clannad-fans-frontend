@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './SectionCharacter.less';
 
 // 人物数据配置
@@ -27,6 +27,34 @@ const characters = [
 
 const SectionCharacter = () => {
   const [selectedCharacter, setSelectedCharacter] = useState(characters[0]);
+  const carouselRef = useRef(null);
+
+  // 阻止轮播区域的滚轮事件冒泡
+  useEffect(() => {
+    const carouselContainer = carouselRef.current;
+
+    const handleWheel = (e) => {
+      const carousel = e.currentTarget.querySelector('.avatar-carousel');
+      if (!carousel) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = carousel;
+      const isAtStart = scrollLeft === 0;
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1;
+
+      e.stopPropagation();
+      carousel.scrollLeft += e.deltaY;
+    };
+
+    if (carouselContainer) {
+      carouselContainer.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (carouselContainer) {
+        carouselContainer.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, []);
 
   return (
     <div className="section-character">
@@ -49,7 +77,7 @@ const SectionCharacter = () => {
       </div>
 
       {/* 底部头像轮播区域 */}
-      <div className="avatar-carousel-container">
+      <div className="avatar-carousel-container" ref={carouselRef}>
         <div className="avatar-carousel">
           {characters.map((character) => (
             <div

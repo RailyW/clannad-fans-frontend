@@ -7,6 +7,7 @@
   align-items: center;
   overflow: visible;
   padding: 20px;
+  perspective: 1200px; // 添加透视效果以支持 3D
 
   .character-card {
     position: relative;
@@ -29,8 +30,21 @@
       0 0 16px rgba(0, 0, 0, 0.075),
       0 0 32px rgba(0, 0, 0, 0.1),
       0 20px 40px rgba(0, 0, 0, 0.15);
-    transform-origin: center bottom;
+    transform-origin: center center;
     overflow: hidden;
+    cursor: pointer; // 添加鼠标指针样式
+    transition: box-shadow 0.3s ease; // 添加阴影过渡效果
+
+    // 鼠标悬停时增强阴影
+    &:hover {
+      box-shadow:
+        0 0 3px rgba(0, 0, 0, 0.1),
+        0 0 6px rgba(0, 0, 0, 0.1),
+        0 0 12px rgba(0, 0, 0, 0.1),
+        0 0 24px rgba(0, 0, 0, 0.1),
+        0 0 48px rgba(0, 0, 0, 0.15),
+        0 30px 60px rgba(0, 0, 0, 0.2);
+    }
 
     // 卡片边框装饰
     &::before {

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import './style.less';
 import SectionWelcome from "./SectionWelcome.jsx";
 import SectionAbout from "./SectionAbout.jsx";
@@ -15,18 +15,16 @@ const Home = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [backgroundTransitioning, setBackgroundTransitioning] = useState(false);
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
-  const [showIntro, setShowIntro] = useState(true); // 控制开场动画
   const [currentOverlay, setCurrentOverlay] = useState(pageBackgrounds.welcome.overlay); // 保存当前 overlay
-  const [selectedCharacterId, setSelectedCharacterId] = useState('nagisa'); // 保存选中的角色ID
   const containerRef = useRef(null);
 
-  const sections = [
-    { id: '首页', component: <SectionWelcome showIntro={showIntro} />, background: pageBackgrounds.welcome },
-    { id: '角色', component: <SectionCharacter selectedCharacterId={selectedCharacterId} onCharacterChange={setSelectedCharacterId} />, background: pageBackgrounds.character },
+  const sections = useMemo(() => [
+    { id: '首页', component: <SectionWelcome />, background: pageBackgrounds.welcome },
+    { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
     { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.music },
     { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
     { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
-  ];
+  ], []);
 
   const scrollToSection = useCallback((index, direction) => {
     if (index >= 0 && index < sections.length && !isScrolling) {
@@ -47,15 +45,11 @@ const Home = () => {
         setIsScrolling(false);
       }, 800);
     }
-  }, [isScrolling]); // 移除 sections 依赖，因为它是固定的
+  }, [isScrolling, sections]);
 
   const handleNavigate = (index) => {
     const direction = index > currentSection ? 'down' : 'up';
     scrollToSection(index, direction);
-  };
-
-  const handleIntroComplete = () => {
-    setShowIntro(false);
   };
 
   useEffect(() => {
@@ -110,7 +104,7 @@ const Home = () => {
   return (
     <div className="home-container" ref={containerRef}>
       {/* 开场遮罩动画 */}
-      {showIntro && <IntroOverlay onComplete={handleIntroComplete} />}
+      <IntroOverlay />
 
       {/* 当前背景 */}
       <div

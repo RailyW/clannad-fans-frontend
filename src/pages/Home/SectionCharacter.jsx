@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import './SectionCharacter.less';
 
 // 人物数据配置
@@ -25,8 +25,9 @@ const characters = [
   { id: 'sonota', name: '其他', avatar: new URL('../../assets/character-avatar/_system_vo_sonota_ZH.png', import.meta.url).href, description: '其他角色' },
 ];
 
-const SectionCharacter = ({ selectedCharacterId, onCharacterChange }) => {
+const SectionCharacter = () => {
   const carouselRef = useRef(null);
+  const [selectedCharacterId, setSelectedCharacterId] = useState('nagisa');
 
   // 根据 ID 找到当前选中的角色对象
   const selectedCharacter = characters.find(char => char.id === selectedCharacterId) || characters[0];
@@ -38,10 +39,6 @@ const SectionCharacter = ({ selectedCharacterId, onCharacterChange }) => {
     const handleWheel = (e) => {
       const carousel = e.currentTarget.querySelector('.avatar-carousel');
       if (!carousel) return;
-
-      const { scrollLeft, scrollWidth, clientWidth } = carousel;
-      const isAtStart = scrollLeft === 0;
-      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 1;
 
       e.stopPropagation();
       carousel.scrollLeft += e.deltaY;
@@ -59,7 +56,7 @@ const SectionCharacter = ({ selectedCharacterId, onCharacterChange }) => {
   }, []);
 
   const handleCharacterClick = (character) => {
-    onCharacterChange(character.id);
+    setSelectedCharacterId(character.id);
   };
 
   return (

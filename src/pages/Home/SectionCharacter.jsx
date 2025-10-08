@@ -48,7 +48,7 @@ const SectionCharacter = () => {
         <AnimatePresence mode="wait">
           <motion.img
             key={selectedCharacter.id}
-            src={selectedCharacter.avatar}
+            src={selectedCharacter.tachie}
             alt={selectedCharacter.name}
             className="character-illustration"
             initial={{ opacity: 0, scale: 0.9 }}

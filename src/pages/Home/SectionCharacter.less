@@ -6,11 +6,12 @@
   box-sizing: border-box;
   position: relative;
 
-  // 主内容区域容器
+  // 上方内容区域容器（信息区 + 立绘区）
   .content-wrapper {
     flex: 1;
     display: flex;
     overflow: hidden;
+    min-height: 0; // 防止flex子元素溢出
   }
 
   // 左侧信息区域 - 固定宽度60%
@@ -62,5 +63,13 @@
       object-fit: contain;
       filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
     }
+  }
+
+  // 底部轮播区域 - 固定高度
+  .carousel-wrapper {
+    flex: 0 0 120px;
+    height: 120px;
+    position: relative;
+    z-index: 10;
   }
 }

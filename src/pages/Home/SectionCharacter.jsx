@@ -26,9 +26,18 @@ const SectionCharacter = () => {
     <div className="section-character">
       {/* 上方内容区域 */}
       <div className="content-wrapper">
-        {/* macOS 风格悬浮窗口 */}
-        <div className="character-window">
-          {/* 左侧信息区域 */}
+        {/* 日式学生证风格卡片 - 横向布局 */}
+        <div className="student-id-card">
+          {/* 左侧照片区域 */}
+          <div className="illustration-area">
+            <AnimatePresence mode="wait">
+              {showCard && <CharacterCard key={selectedCharacterId} character={selectedCharacter} />}
+            </AnimatePresence>
+            {/* 照片区域底部分割线 */}
+            <div className="photo-divider"></div>
+          </div>
+
+          {/* 右侧信息区域 */}
           <div className="info-area">
             <div className="character-details">
               <h2 className="character-name">
@@ -52,13 +61,6 @@ const SectionCharacter = () => {
                 </motion.p>
               </AnimatePresence>
             </div>
-          </div>
-
-          {/* 右侧立绘区域 - 使用卡片组件 */}
-          <div className="illustration-area">
-            <AnimatePresence mode="wait">
-              {showCard && <CharacterCard key={selectedCharacterId} character={selectedCharacter} />}
-            </AnimatePresence>
           </div>
         </div>
       </div>

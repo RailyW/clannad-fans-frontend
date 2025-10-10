@@ -6,77 +6,67 @@
   justify-content: center;
   align-items: center;
   overflow: visible;
-  padding: 20px;
-  perspective: 1200px; // 添加透视效果以支持 3D
+  padding: 10px;
+  perspective: 1200px;
 
   .character-card {
     position: relative;
     width: 90%;
-    max-width: 450px;
-    height: 85%;
-    max-height: 650px;
+    max-width: 340px;
+    height: 92%;
+    max-height: 450px;
     background: linear-gradient(
       135deg,
-      rgba(255, 255, 255, 0.3) 0%,
-      rgba(245, 245, 250, 0.3) 50%,
-      rgba(240, 240, 245, 0.3) 100%
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(250, 250, 250, 0.98) 100%
     );
-    border-radius: 20px;
+    border-radius: 4px;
     box-shadow:
-      0 0 2px rgba(0, 0, 0, 0.075),
-      0 0 4px rgba(0, 0, 0, 0.075),
-      0 0 8px rgba(0, 0, 0, 0.075),
-      0 0 16px rgba(0, 0, 0, 0.075),
-      0 0 32px rgba(0, 0, 0, 0.1),
-      0 20px 40px rgba(0, 0, 0, 0.15);
+      0 0 0 2px rgba(139, 69, 19, 0.25),
+      0 0 0 4px rgba(255, 255, 255, 0.5),
+      0 2px 4px rgba(0, 0, 0, 0.1),
+      0 4px 8px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
     transform-origin: center center;
     overflow: hidden;
-    cursor: pointer; // 添加鼠标指针样式
-    transition: box-shadow 0.3s ease; // 添加阴影过渡效果
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
 
     // 鼠标悬停时增强阴影
     &:hover {
       box-shadow:
-        0 0 3px rgba(0, 0, 0, 0.1),
-        0 0 6px rgba(0, 0, 0, 0.1),
-        0 0 12px rgba(0, 0, 0, 0.1),
-        0 0 24px rgba(0, 0, 0, 0.1),
-        0 0 48px rgba(0, 0, 0, 0.15),
-        0 30px 60px rgba(0, 0, 0, 0.2);
+        0 0 0 2px rgba(139, 69, 19, 0.35),
+        0 0 0 4px rgba(255, 255, 255, 0.6),
+        0 3px 6px rgba(0, 0, 0, 0.12),
+        0 6px 12px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
     }
 
-    // 卡片边框装饰
+    // 学生证照片框装饰 - 双层边框
     &::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border: 3px solid transparent;
-      border-radius: 20px;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.8) 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(200, 200, 220, 0.3) 100%
-      ) border-box;
-      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      mask-composite: exclude;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid rgba(139, 69, 19, 0.15);
+      border-radius: 2px;
       pointer-events: none;
+      z-index: 5;
     }
 
-    // 顶部光晕效果
+    // 顶部装饰纹理
     &::after {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 150px;
+      height: 60px;
       background: radial-gradient(
         ellipse at top,
-        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0.5) 0%,
         rgba(255, 255, 255, 0.2) 40%,
         transparent 70%
       );
@@ -91,16 +81,47 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 15px;
     box-sizing: border-box;
+
+    // 添加纸质纹理效果
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.008) 2px,
+          rgba(0, 0, 0, 0.008) 3px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.008) 2px,
+          rgba(0, 0, 0, 0.008) 3px
+        );
+      pointer-events: none;
+      opacity: 0.5;
+    }
   }
 
   .character-tachie {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+    object-position: center top;
+    filter:
+      drop-shadow(0 1px 3px rgba(0, 0, 0, 0.1))
+      contrast(1.03)
+      brightness(1.01)
+      saturate(0.98);
     position: relative;
     z-index: 1;
   }

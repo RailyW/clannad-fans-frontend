@@ -11,155 +11,269 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    align-items: center;
     min-height: 0;
-    padding: 40px 60px 20px; // 为悬浮卡片留出空间
+    padding: 40px 60px 20px;
     box-sizing: border-box;
   }
 
-  // macOS 风格悬浮窗口
-  .character-window {
-    flex: 1;
+  // 日式学生证风格卡片 - 横向布局
+  .student-id-card {
     display: flex;
-    overflow: hidden;
-    max-width: 60%;
+    flex-direction: row;
+    width: 95%;
+    max-width: 1400px;
+    height: auto;
+    min-height: 550px;
+    max-height: 650px;
 
-    // macOS 窗口风格
-    background: rgba(255, 255, 255, 0.5);
+    // 学生证卡片样式 - 米黄色纸质感
+    background: linear-gradient(
+      135deg,
+      #fffef9 0%,
+      #fdfbf5 50%,
+      #fcf9f1 100%
+    );
     border-radius: 12px;
     box-shadow:
-      0 0 0 0.5px rgba(0, 0, 0, 0.08),
-      0 2px 8px rgba(0, 0, 0, 0.04),
-      0 8px 24px rgba(0, 0, 0, 0.08),
-      0 16px 48px rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+      0 4px 8px rgba(0, 0, 0, 0.08),
+      0 8px 20px rgba(0, 0, 0, 0.06),
+      0 16px 40px rgba(0, 0, 0, 0.04),
+      inset 0 0 0 1px rgba(139, 69, 19, 0.1);
+    border: 3px solid #d4af37;
     position: relative;
+    overflow: hidden;
 
-    // macOS 窗口顶部装饰条
+    // 左上角 - 学校名称
     &::before {
-      content: '';
+      content: '光坂高等学校';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: linear-gradient(
-        180deg,
-        rgba(245, 245, 247, 0.2) 0%,
-        rgba(240, 240, 242, 0.4) 100%
-      );
-      border-radius: 12px 12px 0 0;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      pointer-events: none;
-      z-index: 10;
+      top: 20px;
+      left: 35px;
+      font-size: 28px;
+      font-weight: 900;
+      color: #8b4513;
+      letter-spacing: 8px;
+      text-shadow:
+        2px 2px 0 rgba(218, 165, 32, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 12;
+      padding-left: 8px;
     }
 
-    // macOS 窗口控制按钮
+    // 右上角 - 学生证标题（与校章垂直居中对齐）
+    &::after {
+      content: '学生証';
+      position: absolute;
+      top: 33px;
+      right: 95px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #8b0000;
+      letter-spacing: 8px;
+      z-index: 11;
+      padding-left: 8px;
+      line-height: 1;
+    }
+  }
+
+  // 左侧照片区域 - 固定宽度（增大）
+  .illustration-area {
+    flex: 0 0 420px;
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 95px 35px 60px;
+    box-sizing: border-box;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+
+    // 照片标签 - 在底部
+    &::before {
+      content: '写真';
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      font-weight: bold;
+      color: #8b0000;
+      letter-spacing: 4px;
+      z-index: 6;
+      opacity: 0.7;
+      padding-left: 4px;
+    }
+
+    // 右侧分隔线
     &::after {
       content: '';
       position: absolute;
-      top: 12px;
-      left: 16px;
-      width: 12px;
-      height: 12px;
-      background: #FF5F57;
-      border-radius: 50%;
-      box-shadow:
-        0 0 0 0.5px rgba(0, 0, 0, 0.1),
-        20px 0 0 #FEBC2E,
-        40px 0 0 #28C840;
-      pointer-events: none;
-      z-index: 11;
+      right: 0;
+      top: 75px;
+      bottom: 35px;
+      width: 1px;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(139, 69, 19, 0.2) 10%,
+        rgba(139, 69, 19, 0.3) 50%,
+        rgba(139, 69, 19, 0.2) 90%,
+        transparent 100%
+      );
     }
   }
 
-  // 左侧信息区域 - 固定宽度60%
+  // 照片区域底部分割线（在照片和"写真"标签之间）
+  .photo-divider {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    bottom: 50px;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(139, 69, 19, 0.15) 10%,
+      rgba(139, 69, 19, 0.25) 50%,
+      rgba(139, 69, 19, 0.15) 90%,
+      transparent 100%
+    );
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  // 右侧信息区域
   .info-area {
-    flex: 0 0 60%;
-    width: 60%;
+    flex: 1;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    padding: 60px 40px 40px; // 上方留出空间给窗口装饰条
+    padding: 80px 60px 40px 50px;
     box-sizing: border-box;
     background: transparent;
+    position: relative;
+
+    // 右上角学校印章（与学生证标题垂直居中对齐）
+    &::before {
+      content: '校章';
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(220, 20, 60, 0.08) 0%, transparent 70%);
+      border: 2.5px solid rgba(178, 34, 34, 0.5);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: rgba(139, 0, 0, 0.7);
+      letter-spacing: 0;
+      writing-mode: vertical-rl;
+      z-index: 11;
+      box-shadow:
+        inset 0 0 10px rgba(220, 20, 60, 0.1),
+        0 2px 6px rgba(178, 34, 34, 0.2);
+    }
 
     .character-details {
       flex: 1;
       overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
 
-      // 自定义滚动条样式 - macOS 风格
+      // 自定义滚动条
       &::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
       }
 
       &::-webkit-scrollbar-track {
-        background: transparent;
+        background: rgba(210, 180, 140, 0.08);
+        border-radius: 3px;
       }
 
       &::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
+        background: rgba(139, 69, 19, 0.2);
+        border-radius: 3px;
 
         &:hover {
-          background: rgba(0, 0, 0, 0.3);
+          background: rgba(139, 69, 19, 0.35);
         }
       }
 
       .character-name {
         font-size: 42px;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin-bottom: 20px;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        font-weight: 900;
+        color: #2c1810;
+        margin-bottom: 10px;
+        letter-spacing: 2px;
+        line-height: 1.3;
+        position: relative;
+        padding-bottom: 18px;
+        border-bottom: 2px solid rgba(139, 69, 19, 0.15);
+
+        // 名前标签
+        &::before {
+          content: '氏名';
+          position: absolute;
+          top: -24px;
+          left: 0;
+          font-size: 12px;
+          font-weight: bold;
+          color: rgba(139, 0, 0, 0.6);
+          letter-spacing: 2px;
+        }
+
+        // 强调装饰线
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 140px;
+          height: 2px;
+          background: #8b0000;
+        }
 
         .typewriter-cursor {
           display: inline-block;
-          margin-left: 2px;
-          color: #1d1d1f;
+          margin-left: 3px;
+          color: #2c1810;
         }
       }
 
       .character-description {
-        font-size: 18px;
-        line-height: 1.8;
-        color: #424245;
+        font-size: 17px;
+        line-height: 2.1;
+        color: #3d2817;
         font-weight: 400;
-        white-space: pre-line; // 保留换行符
+        white-space: pre-line;
+        letter-spacing: 1px;
+        position: relative;
+        padding: 24px 0;
+
+        // 備考标签
+        &::before {
+          content: '備考';
+          position: absolute;
+          top: -2px;
+          left: 0;
+          font-size: 12px;
+          font-weight: bold;
+          color: rgba(139, 0, 0, 0.6);
+          letter-spacing: 2px;
+        }
       }
     }
   }
 
-  // 右侧立绘区域 - 固定宽度40%
-  .illustration-area {
-    flex: 0 0 40%;
-    width: 40%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 60px 20px 20px; // 上方留出空间给窗口装饰条
-    box-sizing: border-box;
-    background: transparent;
-    position: relative;
-
-    // 左侧分隔线
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 40px;
-      bottom: 0;
-      width: 1px;
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.08) 0%,
-        rgba(0, 0, 0, 0.04) 50%,
-        rgba(0, 0, 0, 0.08) 100%
-      );
-    }
-  }
-
-  // 底部轮播区域 - 固定高度，完全不受影响
+  // 底部轮播区域
   .carousel-wrapper {
     flex: 0 0 120px;
     height: 120px;

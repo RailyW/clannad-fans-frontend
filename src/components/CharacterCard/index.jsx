@@ -55,8 +55,10 @@ const CharacterCard = ({ character }) => {
       scale: 0.88,
       opacity: 0,
       transition: {
-        duration: 0.25,
-        ease: [0.4, 0, 1, 1],
+        type: 'spring',
+        stiffness: 220,
+        damping: 20,
+        duration: 0.35,
       },
     },
     enter: {
@@ -66,11 +68,11 @@ const CharacterCard = ({ character }) => {
       opacity: 1,
       transition: {
         type: 'spring',
-        stiffness: 100,
-        damping: 15,
-        bounce: 0.4,
-        mass: 1,
-        duration: 0.7,
+        stiffness: 90,
+        damping: 14,
+        bounce: 0.5,
+        mass: 1.1,
+        duration: 0.8,
       },
     },
   };

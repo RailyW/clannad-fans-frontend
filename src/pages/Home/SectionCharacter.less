@@ -22,7 +22,7 @@
     display: flex;
     flex-direction: row;
     width: 95%;
-    max-width: 1400px;
+    max-width: 1200px;
     height: auto;
     min-height: 550px;
     max-height: 650px;
@@ -44,37 +44,342 @@
     position: relative;
     overflow: hidden;
 
-    // 左上角 - 学校名称
-    &::before {
-      content: '光坂高等学校';
-      position: absolute;
-      top: 20px;
-      left: 35px;
-      font-size: 28px;
-      font-weight: 900;
-      color: #8b4513;
-      letter-spacing: 8px;
-      text-shadow:
-        2px 2px 0 rgba(218, 165, 32, 0.3),
-        0 2px 8px rgba(0, 0, 0, 0.1);
-      z-index: 12;
-      padding-left: 8px;
+    // 添加过渡动画
+    transition:
+      border-color 0.6s ease-in-out,
+      background 0.6s ease-in-out,
+      box-shadow 0.6s ease-in-out;
+
+    // 教师证 - 深蓝色主题
+    &[data-card-type='teacher'] {
+      border-color: #4169e1 !important;
+      background: linear-gradient(
+        135deg,
+        #f0f4ff 0%,
+        #e8efff 50%,
+        #e0e9ff 100%
+      ) !important;
+      box-shadow:
+        0 4px 8px rgba(65, 105, 225, 0.08),
+        0 8px 20px rgba(65, 105, 225, 0.06),
+        0 16px 40px rgba(65, 105, 225, 0.04),
+        inset 0 0 0 1px rgba(65, 105, 225, 0.1) !important;
+
+      .card-institution,
+      .card-title {
+        color: #1e3a8a !important;
+      }
+
+      .photo-label {
+        color: #1e3a8a !important;
+      }
+
+      .photo-divider {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(65, 105, 225, 0.15) 10%,
+          rgba(65, 105, 225, 0.25) 50%,
+          rgba(65, 105, 225, 0.15) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .illustration-area::after {
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(65, 105, 225, 0.2) 10%,
+          rgba(65, 105, 225, 0.3) 50%,
+          rgba(65, 105, 225, 0.2) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .info-area::before {
+        border-color: rgba(65, 105, 225, 0.5) !important;
+        background: radial-gradient(circle, rgba(65, 105, 225, 0.08) 0%, transparent 70%) !important;
+        color: rgba(30, 58, 138, 0.8) !important;
+        box-shadow:
+          inset 0 0 10px rgba(65, 105, 225, 0.1),
+          0 2px 6px rgba(65, 105, 225, 0.2) !important;
+      }
+
+      .character-details .character-name {
+        border-bottom-color: rgba(65, 105, 225, 0.15) !important;
+
+        &::before {
+          color: rgba(30, 58, 138, 0.6) !important;
+        }
+
+        &::after {
+          background: #1e3a8a !important;
+        }
+      }
+
+      .character-details .character-description::before {
+        color: rgba(30, 58, 138, 0.5) !important;
+        border-color: rgba(65, 105, 225, 0.15) !important;
+        background: rgba(240, 244, 255, 0.8) !important;
+      }
     }
 
-    // 右上角 - 学生证标题（与校章垂直居中对齐）
-    &::after {
-      content: '学生証';
-      position: absolute;
-      top: 33px;
-      right: 95px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #8b0000;
-      letter-spacing: 8px;
-      z-index: 11;
-      padding-left: 8px;
-      line-height: 1;
+    // 居住证明 - 绿色主题
+    &[data-card-type='resident'] {
+      border-color: #2e7d32 !important;
+      background: linear-gradient(
+        135deg,
+        #f1f8f4 0%,
+        #e8f5ed 50%,
+        #e0f2e6 100%
+      ) !important;
+      box-shadow:
+        0 4px 8px rgba(46, 125, 50, 0.08),
+        0 8px 20px rgba(46, 125, 50, 0.06),
+        0 16px 40px rgba(46, 125, 50, 0.04),
+        inset 0 0 0 1px rgba(46, 125, 50, 0.1) !important;
+
+      .card-institution,
+      .card-title {
+        color: #1b5e20 !important;
+      }
+
+      .photo-label {
+        color: #1b5e20 !important;
+      }
+
+      .photo-divider {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(46, 125, 50, 0.15) 10%,
+          rgba(46, 125, 50, 0.25) 50%,
+          rgba(46, 125, 50, 0.15) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .illustration-area::after {
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(46, 125, 50, 0.2) 10%,
+          rgba(46, 125, 50, 0.3) 50%,
+          rgba(46, 125, 50, 0.2) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .info-area::before {
+        content: '町章';
+        border-color: rgba(46, 125, 50, 0.5) !important;
+        background: radial-gradient(circle, rgba(46, 125, 50, 0.08) 0%, transparent 70%) !important;
+        color: rgba(27, 94, 32, 0.8) !important;
+        box-shadow:
+          inset 0 0 10px rgba(46, 125, 50, 0.1),
+          0 2px 6px rgba(46, 125, 50, 0.2) !important;
+      }
+
+      .character-details .character-name {
+        border-bottom-color: rgba(46, 125, 50, 0.15) !important;
+
+        &::before {
+          color: rgba(27, 94, 32, 0.6) !important;
+        }
+
+        &::after {
+          background: #1b5e20 !important;
+        }
+      }
+
+      .character-details .character-description::before {
+        color: rgba(27, 94, 32, 0.5) !important;
+        border-color: rgba(46, 125, 50, 0.15) !important;
+        background: rgba(241, 248, 244, 0.8) !important;
+      }
     }
+
+    // 访客纪念 - 橙色主题
+    &[data-card-type='visitor'] {
+      border-color: #f57c00 !important;
+      background: linear-gradient(
+        135deg,
+        #fff8f0 0%,
+        #fff3e8 50%,
+        #ffeee0 100%
+      ) !important;
+      box-shadow:
+        0 4px 8px rgba(245, 124, 0, 0.08),
+        0 8px 20px rgba(245, 124, 0, 0.06),
+        0 16px 40px rgba(245, 124, 0, 0.04),
+        inset 0 0 0 1px rgba(245, 124, 0, 0.1) !important;
+
+      .card-institution,
+      .card-title {
+        color: #e65100 !important;
+      }
+
+      .photo-label {
+        color: #e65100 !important;
+      }
+
+      .photo-divider {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(245, 124, 0, 0.15) 10%,
+          rgba(245, 124, 0, 0.25) 50%,
+          rgba(245, 124, 0, 0.15) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .illustration-area::after {
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(245, 124, 0, 0.2) 10%,
+          rgba(245, 124, 0, 0.3) 50%,
+          rgba(245, 124, 0, 0.2) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .info-area::before {
+        content: '町章';
+        border-color: rgba(245, 124, 0, 0.5) !important;
+        background: radial-gradient(circle, rgba(245, 124, 0, 0.08) 0%, transparent 70%) !important;
+        color: rgba(230, 81, 0, 0.8) !important;
+        box-shadow:
+          inset 0 0 10px rgba(245, 124, 0, 0.1),
+          0 2px 6px rgba(245, 124, 0, 0.2) !important;
+      }
+
+      .character-details .character-name {
+        border-bottom-color: rgba(245, 124, 0, 0.15) !important;
+
+        &::before {
+          color: rgba(230, 81, 0, 0.6) !important;
+        }
+
+        &::after {
+          background: #e65100 !important;
+        }
+      }
+
+      .character-details .character-description::before {
+        color: rgba(230, 81, 0, 0.5) !important;
+        border-color: rgba(245, 124, 0, 0.15) !important;
+        background: rgba(255, 248, 240, 0.8) !important;
+      }
+    }
+
+    // 幼儿园证 - 粉色主题
+    &[data-card-type='kindergarten'] {
+      border-color: #ec407a !important;
+      background: linear-gradient(
+        135deg,
+        #fff0f5 0%,
+        #ffe8f0 50%,
+        #ffe0eb 100%
+      ) !important;
+      box-shadow:
+        0 4px 8px rgba(236, 64, 122, 0.08),
+        0 8px 20px rgba(236, 64, 122, 0.06),
+        0 16px 40px rgba(236, 64, 122, 0.04),
+        inset 0 0 0 1px rgba(236, 64, 122, 0.1) !important;
+
+      .card-institution,
+      .card-title {
+        color: #c2185b !important;
+      }
+
+      .photo-label {
+        color: #c2185b !important;
+      }
+
+      .photo-divider {
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(236, 64, 122, 0.15) 10%,
+          rgba(236, 64, 122, 0.25) 50%,
+          rgba(236, 64, 122, 0.15) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .illustration-area::after {
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          rgba(236, 64, 122, 0.2) 10%,
+          rgba(236, 64, 122, 0.3) 50%,
+          rgba(236, 64, 122, 0.2) 90%,
+          transparent 100%
+        ) !important;
+      }
+
+      .info-area::before {
+        content: '園章';
+        border-color: rgba(236, 64, 122, 0.5) !important;
+        background: radial-gradient(circle, rgba(236, 64, 122, 0.08) 0%, transparent 70%) !important;
+        color: rgba(194, 24, 91, 0.8) !important;
+        box-shadow:
+          inset 0 0 10px rgba(236, 64, 122, 0.1),
+          0 2px 6px rgba(236, 64, 122, 0.2) !important;
+      }
+
+      .character-details .character-name {
+        border-bottom-color: rgba(236, 64, 122, 0.15) !important;
+
+        &::before {
+          color: rgba(194, 24, 91, 0.6) !important;
+        }
+
+        &::after {
+          background: #c2185b !important;
+        }
+      }
+
+      .character-details .character-description::before {
+        color: rgba(194, 24, 91, 0.5) !important;
+        border-color: rgba(236, 64, 122, 0.15) !important;
+        background: rgba(255, 240, 245, 0.8) !important;
+      }
+    }
+  }
+
+  // 动态机构名称（左上角）
+  .card-institution {
+    position: absolute;
+    top: 20px;
+    left: 35px;
+    font-size: 28px;
+    font-weight: 900;
+    color: #8b4513;
+    letter-spacing: 8px;
+    text-shadow:
+      2px 2px 0 rgba(218, 165, 32, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 12;
+    padding-left: 8px;
+    transition: color 0.6s ease-in-out;
+  }
+
+  // 动态证件标题（右上角）
+  .card-title {
+    position: absolute;
+    top: 33px;
+    right: 95px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #8b0000;
+    letter-spacing: 8px;
+    z-index: 11;
+    padding-left: 8px;
+    line-height: 1;
+    transition: color 0.6s ease-in-out;
   }
 
   // 左侧照片区域 - 固定宽度（增大）
@@ -90,22 +395,6 @@
     background: transparent;
     position: relative;
     overflow: hidden;
-
-    // 照片标签 - 在底部
-    &::before {
-      content: '写真';
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 14px;
-      font-weight: bold;
-      color: #8b0000;
-      letter-spacing: 4px;
-      z-index: 6;
-      opacity: 0.7;
-      padding-left: 4px;
-    }
 
     // 右侧分隔线
     &::after {
@@ -123,7 +412,24 @@
         rgba(139, 69, 19, 0.2) 90%,
         transparent 100%
       );
+      transition: background 0.6s ease-in-out;
     }
+  }
+
+  // 动态照片标签
+  .photo-label {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: #8b0000;
+    letter-spacing: 4px;
+    z-index: 6;
+    opacity: 0.7;
+    padding-left: 4px;
+    transition: color 0.6s ease-in-out;
   }
 
   // 照片区域底部分割线（在照片和"写真"标签之间）
@@ -143,6 +449,7 @@
     );
     z-index: 10;
     pointer-events: none;
+    transition: background 0.6s ease-in-out;
   }
 
   // 右侧信息区域
@@ -156,7 +463,7 @@
     background: transparent;
     position: relative;
 
-    // 右上角学校印章（与学生证标题垂直居中对齐）
+    // 右上角学校印章（与证件标题垂直居中对齐）
     &::before {
       content: '校章';
       position: absolute;
@@ -179,6 +486,7 @@
       box-shadow:
         inset 0 0 10px rgba(220, 20, 60, 0.1),
         0 2px 6px rgba(178, 34, 34, 0.2);
+      transition: all 0.6s ease-in-out;
     }
 
     .character-details {
@@ -217,10 +525,11 @@
         position: relative;
         padding-bottom: 18px;
         border-bottom: 2px solid rgba(139, 69, 19, 0.15);
+        transition: border-bottom-color 0.6s ease-in-out;
 
-        // 名前标签
+        // 使用data-label动态显示标签
         &::before {
-          content: '氏名';
+          content: attr(data-label);
           position: absolute;
           top: -24px;
           left: 0;
@@ -228,6 +537,7 @@
           font-weight: bold;
           color: rgba(139, 0, 0, 0.6);
           letter-spacing: 2px;
+          transition: color 0.6s ease-in-out;
         }
 
         // 强调装饰线
@@ -239,6 +549,7 @@
           width: 140px;
           height: 2px;
           background: #8b0000;
+          transition: background 0.6s ease-in-out;
         }
 
         .typewriter-cursor {
@@ -256,18 +567,23 @@
         white-space: pre-line;
         letter-spacing: 1px;
         position: relative;
-        padding: 24px 0;
+        padding: 32px 0 24px;
 
-        // 備考标签
+        // 将标签移到右上角，增大字体
         &::before {
-          content: '備考';
+          content: attr(data-label);
           position: absolute;
-          top: -2px;
-          left: 0;
-          font-size: 12px;
+          top: 0;
+          right: 0;
+          font-size: 15px;
           font-weight: bold;
-          color: rgba(139, 0, 0, 0.6);
-          letter-spacing: 2px;
+          color: rgba(139, 0, 0, 0.5);
+          letter-spacing: 3px;
+          padding: 4px 12px;
+          background: rgba(255, 253, 248, 0.6);
+          border: 1px solid rgba(139, 69, 19, 0.15);
+          border-radius: 4px;
+          transition: color 0.6s ease-in-out, border-color 0.6s ease-in-out;
         }
       }
     }

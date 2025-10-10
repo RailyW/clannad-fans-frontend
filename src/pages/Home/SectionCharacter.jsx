@@ -43,7 +43,7 @@ const SectionCharacter = () => {
         };
       case 'teacher':
         return {
-          institution: '光坂高等学校',
+          institution: '私立光坂高等学校',
           cardTitle: '教師証',
           nameLabel: '氏名',
           descLabel: '教職員',
@@ -75,7 +75,7 @@ const SectionCharacter = () => {
         };
       default:
         return {
-          institution: '光坂高等学校',
+          institution: '私立光坂高等学校',
           cardTitle: '学生証',
           nameLabel: '氏名',
           descLabel: '学生',

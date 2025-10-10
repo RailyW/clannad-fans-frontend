@@ -54,7 +54,7 @@ const SectionCharacter = () => {
           institution: '光坂町',
           cardTitle: '居住証明',
           nameLabel: '氏名',
-          descLabel: '住民情報',
+          descLabel: '住民',
           photoLabel: '写真',
         };
       case 'visitor':
@@ -62,7 +62,7 @@ const SectionCharacter = () => {
           institution: '光坂町',
           cardTitle: '訪客紀念',
           nameLabel: '氏名',
-          descLabel: '訪問記録',
+          descLabel: '訪問',
           photoLabel: '写真',
         };
       case 'kindergarten':
@@ -70,7 +70,7 @@ const SectionCharacter = () => {
           institution: '光坂幼稚園',
           cardTitle: '園児証',
           nameLabel: '氏名',
-          descLabel: '園児情報',
+          descLabel: '園児',
           photoLabel: '写真',
         };
       default:

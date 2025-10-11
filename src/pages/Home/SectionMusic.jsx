@@ -13,6 +13,7 @@ const SectionMusic = () => {
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
+  const [tempProgress, setTempProgress] = useState(0); // 用于记录拖动时的临时进度
   const [currentAlbum, setCurrentAlbum] = useState('SteamOST');
   const [currentFormat, setCurrentFormat] = useState('mp3');
   const [musicData, setMusicData] = useState([]);
@@ -77,7 +78,7 @@ const SectionMusic = () => {
       });
 
     // 转换为播放列表格式
-    const processedPlaylist = uniqueMusics.map((music, index) => ({
+    const processedPlaylist = uniqueMusics.map((music) => ({
       id: `${music.ostName}-${music.discNumber}-${music.order}`,
       title: music.musicName,
       artist: music.artist || 'not found',
@@ -203,10 +204,13 @@ const SectionMusic = () => {
 
   // 进度条点击
   const handleProgressClick = (e) => {
+    // 只在非拖动状态下响应点击
     if (progressBarRef.current && !isDraggingProgress && audioRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
       const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       const newTime = percent * duration;
+
+      // 直接设置音频时间并跳转
       audioRef.current.currentTime = newTime;
       setCurrentTime(newTime);
     }
@@ -214,25 +218,39 @@ const SectionMusic = () => {
 
   // 进度条拖动开始
   const handleProgressMouseDown = (e) => {
-    setIsDraggingProgress(true);
-    handleProgressClick(e);
+    if (progressBarRef.current && audioRef.current) {
+      setIsDraggingProgress(true);
+
+      // 计算并记录临时进度
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const newTime = percent * duration;
+      setTempProgress(newTime);
+    }
   };
 
   // 进度条拖动中
   const handleProgressMouseMove = useCallback((e) => {
-    if (isDraggingProgress && progressBarRef.current && audioRef.current) {
+    if (isDraggingProgress && progressBarRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
       const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       const newTime = percent * duration;
-      audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
+
+      // 拖动时更新临时进度，不改变实际音频位置
+      setTempProgress(newTime);
     }
   }, [isDraggingProgress, duration]);
 
   // 进度条拖动结束
   const handleProgressMouseUp = useCallback(() => {
-    setIsDraggingProgress(false);
-  }, []);
+    if (isDraggingProgress && audioRef.current) {
+      // 拖动结束后才设置音频位置到临时进度记录的位置
+      audioRef.current.currentTime = tempProgress;
+      setCurrentTime(tempProgress);
+
+      setIsDraggingProgress(false);
+    }
+  }, [isDraggingProgress, tempProgress]);
 
   // 音量调节点击
   const handleVolumeClick = (e) => {
@@ -334,6 +352,8 @@ const SectionMusic = () => {
         formatTime={formatTime}
         progressBarRef={progressBarRef}
         volumeBarRef={volumeBarRef}
+        isDraggingProgress={isDraggingProgress}
+        tempProgress={tempProgress}
       />
 
       <PlaylistPanel

@@ -273,78 +273,93 @@
           filter: drop-shadow(0 4px 16px rgba(249, 115, 22, 0.5));
         }
       }
-
-      &.format-btn {
-        font-size: 14px;
-        font-weight: 700;
-        padding: 0.4rem 0.8rem;
-        background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(249, 115, 22, 0.15) 100%);
-        border: 1px solid rgba(251, 146, 60, 0.3);
-        border-radius: 8px;
-        color: #f97316;
-        min-width: 60px;
-
-        &:hover {
-          background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(249, 115, 22, 0.25) 100%);
-          border-color: rgba(251, 146, 60, 0.5);
-          filter: none;
-        }
-
-        .format-text {
-          display: block;
-          letter-spacing: 0.5px;
-        }
-      }
     }
   }
 
-  // 音量控制
-  .volume-section {
+  // 音量和格式控制区域
+  .volume-format-section {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    gap: 1rem;
     width: 100%;
 
-    .volume-icon {
-      font-size: 18px;
-      color: #64748b;
-      user-select: none;
-    }
-
-    .volume-bar {
-      flex: 1;
-      height: 5px;
-      background: rgba(251, 146, 60, 0.15);
-      border-radius: 10px;
-      position: relative;
+    .format-btn {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(249, 115, 22, 0.15) 100%);
+      border: 1px solid rgba(251, 146, 60, 0.3);
+      border-radius: 8px;
+      color: #f97316;
+      min-width: 60px;
       cursor: pointer;
-      overflow: hidden;
-      user-select: none;
+      transition: all 0.3s ease;
+      outline: none;
+      flex-shrink: 0;
 
       &:hover {
-        height: 6px;
+        background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(249, 115, 22, 0.25) 100%);
+        border-color: rgba(251, 146, 60, 0.5);
       }
 
-      &:active {
-        height: 6px;
-      }
-
-      .volume-fill {
-        position: absolute;
-        height: 100%;
-        background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
-        border-radius: 10px;
-        pointer-events: none;
+      .format-text {
+        display: block;
+        letter-spacing: 0.5px;
       }
     }
 
-    .volume-display {
-      font-size: 12px;
-      color: #64748b;
-      min-width: 35px;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
-      user-select: none;
+    // 音量控制
+    .volume-section {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex: 1;
+
+      .volume-icon {
+        font-size: 18px;
+        color: #64748b;
+        user-select: none;
+        flex-shrink: 0;
+      }
+
+      .volume-bar {
+        flex: 1;
+        height: 5px;
+        background: rgba(251, 146, 60, 0.15);
+        border-radius: 10px;
+        position: relative;
+        cursor: pointer;
+        overflow: hidden;
+        user-select: none;
+
+        &:hover {
+          height: 6px;
+        }
+
+        &:active {
+          height: 6px;
+        }
+
+        .volume-fill {
+          position: absolute;
+          height: 100%;
+          background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
+          border-radius: 10px;
+          pointer-events: none;
+        }
+      }
+
+      .volume-display {
+        font-size: 12px;
+        color: #64748b;
+        min-width: 35px;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        user-select: none;
+        flex-shrink: 0;
+      }
     }
   }
 }

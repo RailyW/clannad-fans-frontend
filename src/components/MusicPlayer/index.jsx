@@ -30,6 +30,8 @@ const MusicPlayer = ({
                        formatTime,
                        progressBarRef,
                        volumeBarRef,
+                       isDraggingProgress,
+                       tempProgress,
                      }) => {
   const [rotation, setRotation] = useState(0);
   const rotationRef = useRef(rotation);
@@ -120,7 +122,7 @@ const MusicPlayer = ({
 
       {/* 进度条 */}
       <div className="progress-section">
-        <span className="time-display">{formatTime(currentTime)}</span>
+        <span className="time-display">{formatTime(isDraggingProgress ? tempProgress : currentTime)}</span>
         <div
           ref={progressBarRef}
           className="progress-bar"
@@ -130,7 +132,7 @@ const MusicPlayer = ({
           <motion.div
             className="progress-fill"
             initial={{ width: 0 }}
-            animate={{ width: `${(currentTime / duration) * 100}%` }}
+            animate={{ width: `${((isDraggingProgress ? tempProgress : currentTime) / duration) * 100}%` }}
             transition={{ duration: 0.1 }}
           />
         </div>
@@ -139,16 +141,6 @@ const MusicPlayer = ({
 
       {/* 控制按钮 */}
       <div className="controls">
-        <motion.button
-          className="control-btn format-btn"
-          onClick={() => onFormatChange(currentFormat === 'mp3' ? 'flac' : 'mp3')}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          title={currentFormat === 'mp3' ? '切换到无损' : '切换到MP3'}
-        >
-          <span className="format-text">{currentFormat.toUpperCase()}</span>
-        </motion.button>
-
         <motion.button
           className="control-btn"
           onClick={onPrevious}
@@ -177,22 +169,36 @@ const MusicPlayer = ({
         </motion.button>
       </div>
 
-      {/* 音量控制 */}
-      <div className="volume-section">
-        <SoundOutlined className="volume-icon" />
-        <div
-          ref={volumeBarRef}
-          className="volume-bar"
-          onClick={onVolumeClick}
-          onMouseDown={onVolumeMouseDown}
+      {/* 音量和格式控制 */}
+      <div className="volume-format-section">
+        {/* 格式切换按钮 */}
+        <motion.button
+          className="control-btn format-btn"
+          onClick={() => onFormatChange(currentFormat === 'mp3' ? 'flac' : 'mp3')}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={currentFormat === 'mp3' ? '切换到无损' : '切换到MP3'}
         >
-          <motion.div
-            className="volume-fill"
-            animate={{ width: `${volume}%` }}
-            transition={{ duration: 0.1 }}
-          />
+          <span className="format-text">{currentFormat.toUpperCase()}</span>
+        </motion.button>
+
+        {/* 音量控制 */}
+        <div className="volume-section">
+          <SoundOutlined className="volume-icon" />
+          <div
+            ref={volumeBarRef}
+            className="volume-bar"
+            onClick={onVolumeClick}
+            onMouseDown={onVolumeMouseDown}
+          >
+            <motion.div
+              className="volume-fill"
+              animate={{ width: `${volume}%` }}
+              transition={{ duration: 0.1 }}
+            />
+          </div>
+          <span className="volume-display">{volume}%</span>
         </div>
-        <span className="volume-display">{volume}%</span>
       </div>
     </motion.div>
   );

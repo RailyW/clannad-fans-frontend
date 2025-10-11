@@ -38,6 +38,8 @@ const MusicPlayer = ({
                        isDraggingProgress,
                        tempProgress,
                        isAudioLoading,
+                       isFirstVisit = true,
+                       isActive = false,
                      }) => {
   const [rotation, setRotation] = useState(0);
   const rotationRef = useRef(rotation);
@@ -81,7 +83,13 @@ const MusicPlayer = ({
     <motion.div
       className="music-player-container"
       initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
+      animate={
+        isActive && isFirstVisit
+          ? { opacity: 1, x: 0 }
+          : isActive
+          ? { opacity: 1, x: 0 }
+          : { opacity: 0, x: -50 }
+      }
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
       {/* 专辑选择器 */}

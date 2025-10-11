@@ -15,15 +15,16 @@ const Home = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [scrollDirection, setScrollDirection] = useState('down'); // 'down' 或 'up'
   const [showIntro, setShowIntro] = useState(true); // 控制开场动画
+  const [visitedSections, setVisitedSections] = useState(new Set([0])); // 记录已访问的section
   const containerRef = useRef(null);
 
   const sections = useMemo(() => [
     { id: '首页', component: <SectionWelcome showIntro={showIntro} />, background: pageBackgrounds.welcome },
     { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
-    { id: '音乐', component: <SectionMusic />, background: pageBackgrounds.music },
+    { id: '音乐', component: <SectionMusic isActive={currentSection === 2} isFirstVisit={!visitedSections.has(2)} />, background: pageBackgrounds.music },
     { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
     { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
-  ], [showIntro]);
+  ], [showIntro, visitedSections, currentSection]);
 
   // 背景切换动画变体
   const backgroundVariants = {
@@ -66,6 +67,9 @@ const Home = () => {
       setIsScrolling(true);
       setScrollDirection(direction);
       setCurrentSection(index);
+
+      // 标记该section已访问
+      setVisitedSections(prev => new Set([...prev, index]));
 
       // 800ms后解除滚动锁定
       setTimeout(() => {

@@ -6,7 +6,7 @@ import musicPreloader from '../../utils/musicPreloader.js';
 import './style.less';
 import './SectionMusic.less';
 
-const SectionMusic = () => {
+const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(240);
@@ -657,6 +657,8 @@ const SectionMusic = () => {
         isDraggingProgress={isDraggingProgress}
         tempProgress={tempProgress}
         isAudioLoading={isAudioLoading}
+        isFirstVisit={isFirstVisit}
+        isActive={isActive}
       />
 
       <PlaylistPanel
@@ -665,6 +667,8 @@ const SectionMusic = () => {
         isPlaying={isPlaying}
         onSelectTrack={selectTrack}
         formatTime={formatTime}
+        isFirstVisit={isFirstVisit}
+        isActive={isActive}
       />
     </div>
   );

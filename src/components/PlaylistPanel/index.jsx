@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion as Motion } from 'motion/react';
 import { useRef, useEffect } from 'react';
 import './style.less';
 
@@ -7,7 +7,8 @@ const PlaylistPanel = ({
                          currentTrack,
                          isPlaying,
                          onSelectTrack,
-                         formatTime,
+                         isFirstVisit = true,
+                         isActive = false,
                        }) => {
   const playlistItemsRef = useRef(null);
 
@@ -30,10 +31,16 @@ const PlaylistPanel = ({
   }, []);
 
   return (
-    <motion.div
+    <Motion.div
       className="playlist-panel"
       initial={{ opacity: 0, x: 50 }}
-      animate={{ opacity: 1, x: 0 }}
+      animate={
+        isActive && isFirstVisit
+          ? { opacity: 1, x: 0 }
+          : isActive
+          ? { opacity: 1, x: 0 }
+          : { opacity: 0, x: 50 }
+      }
       transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
     >
       <div className="playlist-header">
@@ -42,14 +49,20 @@ const PlaylistPanel = ({
       </div>
       <div className="playlist-items" ref={playlistItemsRef}>
         {playlist.map((track, index) => (
-          <motion.div
+          <Motion.div
             key={track.id}
             className={`playlist-item ${index === currentTrack ? 'active' : ''}`}
             onClick={() => onSelectTrack(index)}
             whileTap={{ scale: 0.98 }}
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 + index * 0.05 }}
+            animate={
+              isActive && isFirstVisit
+                ? { opacity: 1, y: 0 }
+                : isActive
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: 20 }
+            }
+            transition={{ delay: isActive && isFirstVisit ? 0.3 + index * 0.05 : 0 }}
           >
             <div className="track-number">{index + 1}</div>
             <div className="track-info">
@@ -57,29 +70,29 @@ const PlaylistPanel = ({
             </div>
             <div className="track-artist">{track.artist}</div>
             {index === currentTrack && isPlaying && (
-              <motion.div
+              <Motion.div
                 className="playing-indicator"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <motion.span
+                <Motion.span
                   animate={{ scaleY: [0.5, 1, 0.5] }}
                   transition={{ duration: 0.8, repeat: Infinity }}
                 />
-                <motion.span
+                <Motion.span
                   animate={{ scaleY: [1, 0.5, 1] }}
                   transition={{ duration: 0.8, repeat: Infinity }}
                 />
-                <motion.span
+                <Motion.span
                   animate={{ scaleY: [0.5, 1, 0.5] }}
                   transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
                 />
-              </motion.div>
+              </Motion.div>
             )}
-          </motion.div>
+          </Motion.div>
         ))}
       </div>
-    </motion.div>
+    </Motion.div>
   );
 };
 

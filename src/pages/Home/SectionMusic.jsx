@@ -19,10 +19,15 @@ const SectionMusic = () => {
   const [musicData, setMusicData] = useState([]);
   const [playlist, setPlaylist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
 
   const progressBarRef = useRef(null);
   const volumeBarRef = useRef(null);
   const audioRef = useRef(null);
+  const savedTimeRef = useRef(0); // 保存切换格式时的播放位置
+  const wasPlayingRef = useRef(false); // 保存切换格式前的播放状态
+  const savedTrackRef = useRef(0); // 保存切换格式前的曲目索引
+  const isFormatChangingRef = useRef(false); // 标记是否正在切换格式
 
   // 可用的专辑列表
   const albums = [
@@ -91,8 +96,18 @@ const SectionMusic = () => {
     }));
 
     setPlaylist(processedPlaylist);
-    setCurrentTrack(0);
-    setCurrentTime(0);
+
+    // 如果是切换格式，恢复之前的曲目索引
+    if (isFormatChangingRef.current && savedTrackRef.current < processedPlaylist.length) {
+      setCurrentTrack(savedTrackRef.current);
+      isFormatChangingRef.current = false;
+    } else {
+      // 否则重置到第一首
+      setCurrentTrack(0);
+      setCurrentTime(0);
+      savedTimeRef.current = 0;
+    }
+
     setIsPlaying(false);
   }, [musicData, currentAlbum, currentFormat]);
 
@@ -110,9 +125,38 @@ const SectionMusic = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
 
-      // 音频事件监听
+      // 音频加载开始
+      audioRef.current.addEventListener('loadstart', () => {
+        setIsAudioLoading(true);
+      });
+
+      // 音频可以播放
+      audioRef.current.addEventListener('canplay', () => {
+        setIsAudioLoading(false);
+      });
+
+      // 音频元数据加载完成
       audioRef.current.addEventListener('loadedmetadata', () => {
         setDuration(audioRef.current.duration);
+
+        // 如果有保存的时间位置，恢复到该位置
+        if (savedTimeRef.current > 0) {
+          audioRef.current.currentTime = savedTimeRef.current;
+          setCurrentTime(savedTimeRef.current);
+        }
+      });
+
+      // 音频数据加载完成，可以开始播放
+      audioRef.current.addEventListener('canplaythrough', () => {
+        // 如果切换格式前在播放，则继续播放
+        if (wasPlayingRef.current) {
+          audioRef.current.play().catch(err => {
+            console.error('Play failed:', err);
+          });
+          setIsPlaying(true);
+          wasPlayingRef.current = false;
+        }
+        setIsAudioLoading(false);
       });
 
       audioRef.current.addEventListener('timeupdate', () => {
@@ -127,6 +171,17 @@ const SectionMusic = () => {
 
       audioRef.current.addEventListener('error', (e) => {
         console.error('Audio playback error:', e);
+        setIsAudioLoading(false);
+      });
+
+      // 等待数据时显示加载状态
+      audioRef.current.addEventListener('waiting', () => {
+        setIsAudioLoading(true);
+      });
+
+      // 数据到达，可以继续播放
+      audioRef.current.addEventListener('playing', () => {
+        setIsAudioLoading(false);
       });
     }
 
@@ -142,6 +197,12 @@ const SectionMusic = () => {
     if (audioRef.current && currentSong.url) {
       audioRef.current.src = currentSong.url;
       audioRef.current.volume = volume / 100;
+
+      // 如果不是切换格式导致的URL变化，重置播放位置
+      if (!isFormatChangingRef.current && savedTimeRef.current === 0) {
+        audioRef.current.currentTime = 0;
+        setCurrentTime(0);
+      }
 
       if (isPlaying) {
         audioRef.current.play().catch(err => {
@@ -179,6 +240,7 @@ const SectionMusic = () => {
   const handleNext = useCallback(() => {
     setCurrentTrack((prev) => (prev + 1) % playlist.length);
     setCurrentTime(0);
+    savedTimeRef.current = 0; // 清空保存的时间
     setIsPlaying(true);
   }, [playlist.length]);
 
@@ -199,6 +261,7 @@ const SectionMusic = () => {
   const handlePrevious = () => {
     setCurrentTrack((prev) => (prev - 1 + playlist.length) % playlist.length);
     setCurrentTime(0);
+    savedTimeRef.current = 0; // 清空保存的时间
     setIsPlaying(true);
   };
 
@@ -307,7 +370,8 @@ const SectionMusic = () => {
   // 选择曲目
   const selectTrack = (index) => {
     setCurrentTrack(index);
-    setCurrentTime(0);
+    setCurrentTime  (0);
+    savedTimeRef.current = 0; // 清空保存的时间
     setIsPlaying(true);
   };
 
@@ -318,6 +382,23 @@ const SectionMusic = () => {
 
   // 切换格式
   const handleFormatChange = (format) => {
+    if (format === currentFormat) return;
+
+    // 保存当前播放状态、位置和曲目索引
+    if (audioRef.current) {
+      savedTimeRef.current = audioRef.current.currentTime;
+      wasPlayingRef.current = isPlaying;
+      savedTrackRef.current = currentTrack; // 保存当前曲目索引
+      isFormatChangingRef.current = true; // 标记正在切换格式
+
+      // 暂停当前播放
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+
+    // 切换格式
     setCurrentFormat(format);
   };
 
@@ -354,6 +435,7 @@ const SectionMusic = () => {
         volumeBarRef={volumeBarRef}
         isDraggingProgress={isDraggingProgress}
         tempProgress={tempProgress}
+        isAudioLoading={isAudioLoading}
       />
 
       <PlaylistPanel

@@ -33,6 +33,7 @@ const MusicPlayer = ({
                        volumeBarRef,
                        isDraggingProgress,
                        tempProgress,
+                       isAudioLoading,
                      }) => {
   const [rotation, setRotation] = useState(0);
   const rotationRef = useRef(rotation);
@@ -268,6 +269,20 @@ const MusicPlayer = ({
           <span className="volume-display">{volume}%</span>
         </div>
       </div>
+
+      {/* 加载提示 */}
+      {isAudioLoading && (
+        <motion.div
+          className="loading-indicator"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="spinner" />
+          <span className="loading-text">加载中...</span>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

@@ -98,7 +98,16 @@ const fileService = {
    * @returns {string} 音乐文件 URL
    */
   getMusicFile: (album, filename) => {
-    return getFileUrl(`musics/${album}/${filename}`);
+    return getFileUrl(`music/${album}/${filename}`);
+  },
+
+  /**
+   * 获取音乐封面 URL
+   * @param {string} album - 专辑名
+   * @returns {string} 封面文件 URL
+   */
+  getMusicCover: (album) => {
+    return getFileUrl(`music/${album}/cover.jpg`);
   },
 
   /**
@@ -113,4 +122,3 @@ const fileService = {
 
 export { apiService, fileService };
 export default apiService;
-

@@ -17,6 +17,9 @@ const MusicPlayer = ({
                        duration,
                        volume,
                        isFavorite,
+                       currentAlbum,
+                       currentFormat,
+                       albums,
                        onPlayPause,
                        onPrevious,
                        onNext,
@@ -25,6 +28,8 @@ const MusicPlayer = ({
                        onVolumeClick,
                        onVolumeMouseDown,
                        onFavoriteToggle,
+                       onAlbumChange,
+                       onFormatChange,
                        formatTime,
                        progressBarRef,
                        volumeBarRef,
@@ -36,6 +41,25 @@ const MusicPlayer = ({
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
+      {/* 专辑和格式选择器 */}
+      <div className="player-settings">
+        <div className="setting-group">
+          <label>专辑</label>
+          <select value={currentAlbum} onChange={(e) => onAlbumChange(e.target.value)} className="album-selector">
+            {albums.map(album => (
+              <option key={album.value} value={album.value}>{album.label}</option>
+            ))}
+          </select>
+        </div>
+        <div className="setting-group">
+          <label>音质</label>
+          <select value={currentFormat} onChange={(e) => onFormatChange(e.target.value)} className="format-selector">
+            <option value="mp3">MP3</option>
+            <option value="flac">FLAC (无损)</option>
+          </select>
+        </div>
+      </div>
+
       {/* 专辑封面 */}
       <motion.div
         className="album-cover-wrapper"

@@ -1,74 +1,179 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import MusicPlayer from '../../components/MusicPlayer/index.jsx';
 import PlaylistPanel from '../../components/PlaylistPanel/index.jsx';
+import { apiService, fileService } from '../../services/api.js';
 import './style.less';
 import './SectionMusic.less';
 
 const SectionMusic = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration] = useState(240); // 模拟时长（秒）
+  const [duration, setDuration] = useState(240);
   const [volume, setVolume] = useState(70);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
+  const [currentAlbum, setCurrentAlbum] = useState('SteamOST');
+  const [currentFormat, setCurrentFormat] = useState('mp3');
+  const [musicData, setMusicData] = useState([]);
+  const [playlist, setPlaylist] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const progressBarRef = useRef(null);
   const volumeBarRef = useRef(null);
+  const audioRef = useRef(null);
 
-  // 模拟音乐数据（后续可替换为API数据）
-  const playlist = [
-    {
-      id: 1,
-      title: '小さなてのひら',
-      artist: 'eufonius',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-1.jpg',
-      duration: 240,
-    },
-    {
-      id: 2,
-      title: 'だんご大家族',
-      artist: '茶太',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-2.jpg',
-      duration: 210,
-    },
-    {
-      id: 3,
-      title: '渚',
-      artist: '折戸伸治',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-3.jpg',
-      duration: 195,
-    },
-    {
-      id: 4,
-      title: '汐',
-      artist: '折戸伸治',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-4.jpg',
-      duration: 220,
-    },
-    {
-      id: 5,
-      title: '同じ高み',
-      artist: 'eufonius',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-5.jpg',
-      duration: 230,
-    },
-    {
-      id: 6,
-      title: '遙かな年月',
-      artist: 'riya',
-      album: 'CLANNAD Original Soundtrack',
-      cover: '/album-cover-6.jpg',
-      duration: 205,
-    },
+  // 可用的专辑列表
+  const albums = [
+    { value: 'SteamOST', label: 'Steam Original Soundtrack' },
+    { value: 'mabinogi', label: 'Mabinogi Arrange Album' }
   ];
 
-  const currentSong = playlist[currentTrack];
+  // 从API获取音乐数据
+  useEffect(() => {
+    const fetchMusicData = async () => {
+      try {
+        setLoading(true);
+        const response = await apiService.getMusics();
+        if (response.success && response.data.musics) {
+          setMusicData(response.data.musics);
+        }
+      } catch (error) {
+        console.error('Failed to fetch music data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMusicData();
+  }, []);
+
+  // 根据当前专辑和格式过滤播放列表
+  useEffect(() => {
+    if (musicData.length === 0) return;
+
+    // 过滤出当前专辑和格式的音乐
+    const filteredMusics = musicData.filter(
+      music => music.ostName === currentAlbum && music.type === currentFormat
+    );
+
+    // 去重并排序
+    const uniqueMusics = [];
+    const seen = new Set();
+
+    filteredMusics
+      .sort((a, b) => {
+        if (a.discNumber !== b.discNumber) {
+          return a.discNumber - b.discNumber;
+        }
+        return a.order - b.order;
+      })
+      .forEach(music => {
+        const key = `${music.discNumber}-${music.order}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          uniqueMusics.push(music);
+        }
+      });
+
+    // 转换为播放列表格式
+    const processedPlaylist = uniqueMusics.map((music, index) => ({
+      id: `${music.ostName}-${music.discNumber}-${music.order}`,
+      title: music.musicName,
+      artist: music.artist || 'not found',
+      album: music.ostName,
+      duration: music.duration || 240, // 默认4分钟
+      cover: fileService.getMusicCover(music.ostName),
+      url: fileService.getMusicFile(music.ostName, music.fileName),
+      discNumber: music.discNumber,
+      order: music.order,
+    }));
+
+    setPlaylist(processedPlaylist);
+    setCurrentTrack(0);
+    setCurrentTime(0);
+    setIsPlaying(false);
+  }, [musicData, currentAlbum, currentFormat]);
+
+  const currentSong = playlist[currentTrack] || {
+    id: 'loading',
+    title: 'Loading...',
+    artist: 'Loading...',
+    album: 'Loading...',
+    duration: 240,
+    cover: null,
+  };
+
+  // 初始化音频元素
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio();
+
+      // 音频事件监听
+      audioRef.current.addEventListener('loadedmetadata', () => {
+        setDuration(audioRef.current.duration);
+      });
+
+      audioRef.current.addEventListener('timeupdate', () => {
+        if (!isDraggingProgress) {
+          setCurrentTime(audioRef.current.currentTime);
+        }
+      });
+
+      audioRef.current.addEventListener('ended', () => {
+        handleNext();
+      });
+
+      audioRef.current.addEventListener('error', (e) => {
+        console.error('Audio playback error:', e);
+      });
+    }
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, []);
+
+  // 更新音频源和播放状态
+  useEffect(() => {
+    if (audioRef.current && currentSong.url) {
+      audioRef.current.src = currentSong.url;
+      audioRef.current.volume = volume / 100;
+
+      if (isPlaying) {
+        audioRef.current.play().catch(err => {
+          console.error('Play failed:', err);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [currentSong.url]);
+
+  // 更新播放状态
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(err => {
+          console.error('Play failed:', err);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  // 更新音量
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume / 100;
+    }
+  }, [volume]);
 
   // 下一曲
   const handleNext = useCallback(() => {
@@ -77,25 +182,9 @@ const SectionMusic = () => {
     setIsPlaying(true);
   }, [playlist.length]);
 
-  // 模拟播放进度
-  useEffect(() => {
-    let timer;
-    if (isPlaying && currentTime < duration) {
-      timer = setInterval(() => {
-        setCurrentTime(prev => {
-          if (prev >= duration) {
-            handleNext();
-            return 0;
-          }
-          return prev + 1;
-        });
-      }, 1000);
-    }
-    return () => clearInterval(timer);
-  }, [isPlaying, currentTime, duration, handleNext]);
-
   // 格式化时间
   const formatTime = (seconds) => {
+    if (!seconds || isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
@@ -115,10 +204,12 @@ const SectionMusic = () => {
 
   // 进度条点击
   const handleProgressClick = (e) => {
-    if (progressBarRef.current && !isDraggingProgress) {
+    if (progressBarRef.current && !isDraggingProgress && audioRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
       const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      setCurrentTime(percent * duration);
+      const newTime = percent * duration;
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   };
 
@@ -130,10 +221,12 @@ const SectionMusic = () => {
 
   // 进度条拖动中
   const handleProgressMouseMove = useCallback((e) => {
-    if (isDraggingProgress && progressBarRef.current) {
+    if (isDraggingProgress && progressBarRef.current && audioRef.current) {
       const rect = progressBarRef.current.getBoundingClientRect();
       const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-      setCurrentTime(percent * duration);
+      const newTime = percent * duration;
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
     }
   }, [isDraggingProgress, duration]);
 
@@ -206,6 +299,24 @@ const SectionMusic = () => {
     setIsFavorite(!isFavorite);
   };
 
+  // 切换专辑
+  const handleAlbumChange = (album) => {
+    setCurrentAlbum(album);
+  };
+
+  // 切换格式
+  const handleFormatChange = (format) => {
+    setCurrentFormat(format);
+  };
+
+  if (loading) {
+    return (
+      <div className="section-music">
+        <div className="loading-message">加载音乐数据中...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="section-music">
       <MusicPlayer
@@ -215,6 +326,9 @@ const SectionMusic = () => {
         duration={duration}
         volume={volume}
         isFavorite={isFavorite}
+        currentAlbum={currentAlbum}
+        currentFormat={currentFormat}
+        albums={albums}
         onPlayPause={togglePlay}
         onPrevious={handlePrevious}
         onNext={handleNext}
@@ -223,6 +337,8 @@ const SectionMusic = () => {
         onVolumeClick={handleVolumeClick}
         onVolumeMouseDown={handleVolumeMouseDown}
         onFavoriteToggle={toggleFavorite}
+        onAlbumChange={handleAlbumChange}
+        onFormatChange={handleFormatChange}
         formatTime={formatTime}
         progressBarRef={progressBarRef}
         volumeBarRef={volumeBarRef}

@@ -31,6 +31,59 @@
     pointer-events: none;
   }
 
+  // 播放器设置区域
+  .player-settings {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    z-index: 10;
+
+    .setting-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      select {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(251, 146, 60, 0.2);
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
+
+        &:hover {
+          border-color: rgba(251, 146, 60, 0.4);
+          background: rgba(255, 255, 255, 0.95);
+        }
+
+        &:focus {
+          outline: none;
+          border-color: #f97316;
+          box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
+        }
+
+        option {
+          padding: 0.5rem;
+        }
+      }
+    }
+  }
+
   // 专辑封面区域
   .album-cover-wrapper {
     width: 100%;

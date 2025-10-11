@@ -112,18 +112,14 @@ const MusicPlayer = ({
                   exit={{ opacity: 0, y: -10, scale: 0.95 }}
                   transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  {albums.map((album, index) => (
-                    <motion.div
+                  {albums.map((album) => (
+                    <div
                       key={album.value}
                       className={`dropdown-item ${currentAlbum === album.value ? 'active' : ''}`}
                       onClick={() => {
                         onAlbumChange(album.value);
                         setIsDropdownOpen(false);
                       }}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      whileHover={{ x: 5, backgroundColor: 'rgba(251, 146, 60, 0.1)' }}
                     >
                       <span className="item-icon">♪</span>
                       <span className="item-text">{album.label}</span>
@@ -137,7 +133,7 @@ const MusicPlayer = ({
                           ✓
                         </motion.span>
                       )}
-                    </motion.div>
+                    </div>
                   ))}
                 </motion.div>
               )}
@@ -188,7 +184,7 @@ const MusicPlayer = ({
         >
           <h2 className="song-title">{currentSong.title}</h2>
           <p className="song-artist">{currentSong.artist}</p>
-          <p className="song-album">{currentSong.album}</p>
+          <p className="song-album">{albums.find(a => a.value === currentAlbum)?.label || currentSong.album}</p>
         </motion.div>
       </AnimatePresence>
 

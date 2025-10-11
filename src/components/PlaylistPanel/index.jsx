@@ -1,4 +1,5 @@
 import { motion } from 'motion/react';
+import { useRef, useEffect } from 'react';
 import './style.less';
 
 const PlaylistPanel = ({
@@ -8,6 +9,26 @@ const PlaylistPanel = ({
                          onSelectTrack,
                          formatTime,
                        }) => {
+  const playlistItemsRef = useRef(null);
+
+  // 阻止滚轮事件冒泡到父元素，避免触发section切换
+  useEffect(() => {
+    const handleWheel = (e) => {
+      e.stopPropagation();
+    };
+
+    const element = playlistItemsRef.current;
+    if (element) {
+      element.addEventListener('wheel', handleWheel, { passive: false });
+    }
+
+    return () => {
+      if (element) {
+        element.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, []);
+
   return (
     <motion.div
       className="playlist-panel"
@@ -19,7 +40,7 @@ const PlaylistPanel = ({
         <h3>播放列表</h3>
         <div className="playlist-count">{playlist.length} 首歌曲</div>
       </div>
-      <div className="playlist-items">
+      <div className="playlist-items" ref={playlistItemsRef}>
         {playlist.map((track, index) => (
           <motion.div
             key={track.id}

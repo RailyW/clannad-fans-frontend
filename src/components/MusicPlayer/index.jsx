@@ -1,12 +1,11 @@
 import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect, useRef } from 'react';
 import {
   PlayCircleOutlined,
   PauseCircleOutlined,
   StepBackwardOutlined,
   StepForwardOutlined,
   SoundOutlined,
-  HeartOutlined,
-  HeartFilled
 } from '@ant-design/icons';
 import './style.less';
 
@@ -16,7 +15,6 @@ const MusicPlayer = ({
                        currentTime,
                        duration,
                        volume,
-                       isFavorite,
                        currentAlbum,
                        currentFormat,
                        albums,
@@ -27,13 +25,34 @@ const MusicPlayer = ({
                        onProgressMouseDown,
                        onVolumeClick,
                        onVolumeMouseDown,
-                       onFavoriteToggle,
                        onAlbumChange,
                        onFormatChange,
                        formatTime,
                        progressBarRef,
                        volumeBarRef,
                      }) => {
+  const [rotation, setRotation] = useState(0);
+  const rotationRef = useRef(rotation);
+
+  // 当播放状态改变时更新旋转角度
+  useEffect(() => {
+    rotationRef.current = rotation;
+  }, [rotation]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      const startTime = Date.now();
+      const startRotation = rotationRef.current;
+
+      const interval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        setRotation((startRotation + elapsed * 18) % 360); // 每秒旋转18度，20秒一圈
+      }, 100); // 更频繁的更新以保持流畅
+
+      return () => clearInterval(interval);
+    }
+  }, [isPlaying]);
+
   return (
     <motion.div
       className="music-player-container"
@@ -41,7 +60,7 @@ const MusicPlayer = ({
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
-      {/* 专辑和格式选择器 */}
+      {/* 专辑选择器 */}
       <div className="player-settings">
         <div className="setting-group">
           <label>专辑</label>
@@ -51,24 +70,17 @@ const MusicPlayer = ({
             ))}
           </select>
         </div>
-        <div className="setting-group">
-          <label>音质</label>
-          <select value={currentFormat} onChange={(e) => onFormatChange(e.target.value)} className="format-selector">
-            <option value="mp3">MP3</option>
-            <option value="flac">FLAC (无损)</option>
-          </select>
-        </div>
       </div>
 
       {/* 专辑封面 */}
       <motion.div
         className="album-cover-wrapper"
         animate={{
-          rotate: isPlaying ? 360 : 0,
+          rotate: isPlaying ? rotation + 360 : rotation,
           scale: isPlaying ? 1.05 : 1
         }}
         transition={{
-          rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+          rotate: isPlaying ? { duration: 20, repeat: Infinity, ease: "linear" } : { duration: 0 },
           scale: { duration: 0.3 }
         }}
       >
@@ -81,7 +93,6 @@ const MusicPlayer = ({
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* 这里后续可以放置真实的专辑封面图片 */}
             {currentSong.cover ? (
               <img src={currentSong.cover} alt={currentSong.title} />
             ) : (
@@ -129,12 +140,13 @@ const MusicPlayer = ({
       {/* 控制按钮 */}
       <div className="controls">
         <motion.button
-          className="control-btn favorite-btn"
-          onClick={onFavoriteToggle}
+          className="control-btn format-btn"
+          onClick={() => onFormatChange(currentFormat === 'mp3' ? 'flac' : 'mp3')}
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          title={currentFormat === 'mp3' ? '切换到无损' : '切换到MP3'}
         >
-          {isFavorite ? <HeartFilled /> : <HeartOutlined />}
+          <span className="format-text">{currentFormat.toUpperCase()}</span>
         </motion.button>
 
         <motion.button

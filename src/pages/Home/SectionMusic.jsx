@@ -11,7 +11,6 @@ const SectionMusic = () => {
   const [duration, setDuration] = useState(240);
   const [volume, setVolume] = useState(70);
   const [currentTrack, setCurrentTrack] = useState(0);
-  const [isFavorite, setIsFavorite] = useState(false);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [isDraggingVolume, setIsDraggingVolume] = useState(false);
   const [currentAlbum, setCurrentAlbum] = useState('SteamOST');
@@ -294,11 +293,6 @@ const SectionMusic = () => {
     setIsPlaying(true);
   };
 
-  // 收藏切换
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
-
   // 切换专辑
   const handleAlbumChange = (album) => {
     setCurrentAlbum(album);
@@ -325,7 +319,6 @@ const SectionMusic = () => {
         currentTime={currentTime}
         duration={duration}
         volume={volume}
-        isFavorite={isFavorite}
         currentAlbum={currentAlbum}
         currentFormat={currentFormat}
         albums={albums}
@@ -336,7 +329,6 @@ const SectionMusic = () => {
         onProgressMouseDown={handleProgressMouseDown}
         onVolumeClick={handleVolumeClick}
         onVolumeMouseDown={handleVolumeMouseDown}
-        onFavoriteToggle={toggleFavorite}
         onAlbumChange={handleAlbumChange}
         onFormatChange={handleFormatChange}
         formatTime={formatTime}

@@ -55,9 +55,8 @@ const PlaylistPanel = ({
             <div className="track-number">{index + 1}</div>
             <div className="track-info">
               <div className="track-title">{track.title}</div>
-              <div className="track-artist">{track.artist}</div>
             </div>
-            <div className="track-duration">{formatTime(track.duration)}</div>
+            <div className="track-artist">{track.artist}</div>
             {index === currentTrack && isPlaying && (
               <motion.div
                 className="playing-indicator"

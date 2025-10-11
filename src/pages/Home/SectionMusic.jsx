@@ -86,7 +86,7 @@ const SectionMusic = () => {
     const processedPlaylist = uniqueMusics.map((music) => ({
       id: `${music.ostName}-${music.discNumber}-${music.order}`,
       title: music.musicName,
-      artist: music.artist || 'not found',
+      artist: music.artist || 'VISUALARTS/Key',
       album: music.ostName,
       duration: music.duration || 240, // 默认4分钟
       cover: fileService.getMusicCover(music.ostName),

@@ -2,7 +2,7 @@
   flex: 0 0 calc(33.333% - 1rem);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 252, 0.9) 50%, rgba(241, 245, 249, 0.85) 100%);
   border-radius: 30px;
-  padding: 3rem 2.5rem;
+  padding: 2.5rem 2rem;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 8px 32px rgba(251, 146, 60, 0.1),
@@ -51,34 +51,169 @@
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+
+        &::before {
+          content: '♪';
+          font-size: 14px;
+          color: #f97316;
+          opacity: 0;
+          transform: translateX(-5px);
+          transition: all 0.3s ease;
+        }
       }
 
-      select {
+      &:hover label::before {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .album-selector-wrapper {
+        position: relative;
         width: 100%;
-        padding: 0.6rem 1rem;
-        background: rgba(255, 255, 255, 0.8);
-        border: 1px solid rgba(251, 146, 60, 0.2);
-        border-radius: 12px;
-        font-size: 14px;
-        font-weight: 500;
-        color: #1e293b;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
 
-        &:hover {
-          border-color: rgba(251, 146, 60, 0.4);
-          background: rgba(255, 255, 255, 0.95);
+        .album-icon {
+          position: absolute;
+          left: 1rem;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 18px;
+          color: #f97316;
+          pointer-events: none;
+          z-index: 2;
+          transition: all 0.3s ease;
+          filter: drop-shadow(0 2px 4px rgba(249, 115, 22, 0.3));
         }
 
-        &:focus {
-          outline: none;
-          border-color: #f97316;
-          box-shadow: 0 0 0 3px rgba(251, 146, 60, 0.15);
+        .custom-select {
+          width: 100%;
+          padding: 0.75rem 2.5rem 0.75rem 3rem;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 252, 249, 0.98) 100%);
+          border: 2px solid rgba(251, 146, 60, 0.25);
+          border-radius: 16px;
+          font-size: 15px;
+          font-weight: 600;
+          color: #1e293b;
+          cursor: pointer;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow:
+            0 4px 12px rgba(251, 146, 60, 0.12),
+            0 2px 6px rgba(0, 0, 0, 0.08),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          user-select: none;
+
+          .selected-value {
+            flex: 1;
+            text-align: left;
+          }
+
+          .dropdown-arrow {
+            font-size: 12px;
+            color: #f97316;
+            font-weight: bold;
+            transition: all 0.3s ease;
+          }
+
+          &:hover {
+            border-color: rgba(251, 146, 60, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 250, 245, 1) 100%);
+            box-shadow:
+              0 6px 20px rgba(251, 146, 60, 0.2),
+              0 3px 10px rgba(0, 0, 0, 0.1),
+              inset 0 1px 0 rgba(255, 255, 255, 1);
+            transform: translateY(-2px);
+
+            & ~ .album-icon {
+              transform: translateY(-50%) rotate(15deg) scale(1.1);
+              filter: drop-shadow(0 3px 8px rgba(249, 115, 22, 0.5));
+            }
+          }
+
+          &:active {
+            transform: translateY(0);
+          }
         }
 
-        option {
-          padding: 0.5rem;
+        .dropdown-menu {
+          position: absolute;
+          top: calc(100% + 0.5rem);
+          left: 0;
+          right: 0;
+          background: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(12px);
+          border: 2px solid rgba(251, 146, 60, 0.3);
+          border-radius: 16px;
+          box-shadow:
+            0 12px 40px rgba(0, 0, 0, 0.15),
+            0 6px 20px rgba(251, 146, 60, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9);
+          overflow: hidden;
+          z-index: 100;
+
+          .dropdown-item {
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            border-bottom: 1px solid rgba(251, 146, 60, 0.1);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            .item-icon {
+              position: absolute;
+              left: 1rem;
+              font-size: 14px;
+              color: #f97316;
+              opacity: 0.5;
+              transition: all 0.3s ease;
+            }
+
+            .item-text {
+              flex: 1;
+            }
+
+            .check-icon {
+              font-size: 16px;
+              color: #f97316;
+              font-weight: bold;
+            }
+
+            &:hover {
+              background: linear-gradient(90deg, rgba(251, 146, 60, 0.08) 0%, rgba(251, 146, 60, 0.12) 100%);
+              color: #f97316;
+              padding-left: 3.25rem;
+
+              .item-icon {
+                opacity: 1;
+                transform: scale(1.2);
+              }
+            }
+
+            &.active {
+              background: linear-gradient(90deg, rgba(251, 146, 60, 0.12) 0%, rgba(251, 146, 60, 0.15) 100%);
+              color: #f97316;
+              font-weight: 600;
+
+              .item-icon {
+                opacity: 1;
+              }
+            }
+          }
         }
       }
     }
@@ -87,10 +222,10 @@
   // 专辑封面区域
   .album-cover-wrapper {
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
     aspect-ratio: 1;
     position: relative;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 
     .album-cover {
       width: 100%;
@@ -171,24 +306,25 @@
   .song-info {
     text-align: center;
     width: 100%;
+    margin: 0;
 
     .song-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 600;
       color: #1e293b;
-      margin: 0 0 0.5rem 0;
+      margin: 0 0 0.4rem 0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       letter-spacing: 0.5px;
     }
 
     .song-artist {
-      font-size: 15px;
+      font-size: 14px;
       color: #475569;
-      margin: 0 0 0.3rem 0;
+      margin: 0 0 0.25rem 0;
     }
 
     .song-album {
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
       margin: 0;
     }
@@ -244,7 +380,7 @@
     display: flex;
     align-items: center;
     gap: 1.2rem;
-    margin: 0.5rem 0;
+    margin: 0.25rem 0;
 
     .control-btn {
       background: none;
@@ -368,6 +504,7 @@
 @media (max-width: 1400px) {
   .music-player-container {
     padding: 2.5rem 2rem;
+    gap: 1.5rem;
 
     .album-cover-wrapper {
       max-width: 240px;
@@ -418,5 +555,14 @@
         }
       }
     }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
   }
 }

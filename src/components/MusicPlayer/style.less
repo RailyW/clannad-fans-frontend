@@ -1,13 +1,14 @@
 .music-player-container {
   flex: 0 0 calc(33.333% - 1rem);
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 252, 0.9) 50%, rgba(241, 245, 249, 0.85) 100%);
   border-radius: 30px;
   padding: 3rem 2.5rem;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 32px rgba(139, 92, 246, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -15,6 +16,20 @@
   height: 90vh;
   max-height: 800px;
   overflow: hidden;
+  position: relative;
+
+  // 添加微妙的光晕效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 100px;
+    background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
 
   // 专辑封面区域
   .album-cover-wrapper {
@@ -107,21 +122,21 @@
     .song-title {
       font-size: 24px;
       font-weight: 600;
-      color: #ffffff;
+      color: #1e293b;
       margin: 0 0 0.5rem 0;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
       letter-spacing: 0.5px;
     }
 
     .song-artist {
       font-size: 15px;
-      color: rgba(255, 255, 255, 0.8);
+      color: #475569;
       margin: 0 0 0.3rem 0;
     }
 
     .song-album {
       font-size: 13px;
-      color: rgba(255, 255, 255, 0.5);
+      color: #94a3b8;
       margin: 0;
     }
   }
@@ -135,7 +150,7 @@
 
     .time-display {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      color: #64748b;
       min-width: 40px;
       font-variant-numeric: tabular-nums;
     }
@@ -143,7 +158,7 @@
     .progress-bar {
       flex: 1;
       height: 6px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(139, 92, 246, 0.15);
       border-radius: 10px;
       position: relative;
       cursor: pointer;
@@ -173,9 +188,9 @@
         transform: translateY(-50%) translateX(-50%) scale(0);
         width: 16px;
         height: 16px;
-        background: #ffffff;
+        background: #8b5cf6;
         border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
         cursor: pointer;
@@ -193,7 +208,7 @@
     .control-btn {
       background: none;
       border: none;
-      color: rgba(255, 255, 255, 0.9);
+      color: #475569;
       font-size: 26px;
       cursor: pointer;
       display: flex;
@@ -204,17 +219,17 @@
       outline: none;
 
       &:hover {
-        color: #ffffff;
-        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        color: #8b5cf6;
+        filter: drop-shadow(0 2px 6px rgba(139, 92, 246, 0.3));
       }
 
       &.play-btn {
         font-size: 52px;
-        color: #ffffff;
-        filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+        color: #8b5cf6;
+        filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.3));
 
         &:hover {
-          filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.4));
+          filter: drop-shadow(0 4px 16px rgba(139, 92, 246, 0.5));
         }
       }
 
@@ -241,13 +256,13 @@
 
     .volume-icon {
       font-size: 18px;
-      color: rgba(255, 255, 255, 0.8);
+      color: #64748b;
     }
 
     .volume-bar {
       flex: 1;
       height: 5px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(139, 92, 246, 0.15);
       border-radius: 10px;
       position: relative;
       cursor: pointer;
@@ -273,9 +288,9 @@
         transform: translateY(-50%) translateX(-50%) scale(0);
         width: 14px;
         height: 14px;
-        background: #ffffff;
+        background: #8b5cf6;
         border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
         opacity: 0;
         transition: opacity 0.3s ease, transform 0.3s ease;
         cursor: pointer;
@@ -284,7 +299,7 @@
 
     .volume-display {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.7);
+      color: #64748b;
       min-width: 35px;
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -348,4 +363,3 @@
     }
   }
 }
-

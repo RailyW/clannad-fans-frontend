@@ -1,40 +1,62 @@
 .playlist-panel {
   flex: 0 0 calc(66.667% - 1rem);
-  background: rgba(30, 30, 40, 0.92);
-  backdrop-filter: blur(20px);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.85) 0%, rgba(248, 250, 252, 0.9) 50%, rgba(241, 245, 249, 0.85) 100%);
   border-radius: 30px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+    0 20px 60px rgba(0, 0, 0, 0.15),
+    0 8px 32px rgba(139, 92, 246, 0.1),
+    0 0 0 1px rgba(139, 92, 246, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   overflow: hidden;
   height: 90vh;
   max-height: 800px;
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  // 添加顶部光晕效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
   .playlist-header {
     padding: 2rem 2.5rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
 
     h3 {
       margin: 0;
       font-size: 24px;
       font-weight: 600;
-      color: #ffffff;
+      color: #1e293b;
       letter-spacing: 0.5px;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .playlist-count {
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.6);
-      background: rgba(255, 255, 255, 0.08);
+      color: #1e293b;
+      background: rgba(139, 92, 246, 0.12);
       padding: 0.5rem 1rem;
       border-radius: 20px;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+      font-weight: 500;
     }
   }
 
@@ -42,22 +64,24 @@
     flex: 1;
     overflow-y: auto;
     padding: 1rem 0;
+    position: relative;
+    z-index: 1;
 
     &::-webkit-scrollbar {
       width: 8px;
     }
 
     &::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(139, 92, 246, 0.05);
       margin: 0.5rem 0;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(139, 92, 246, 0.3);
       border-radius: 4px;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(139, 92, 246, 0.5);
       }
     }
 
@@ -72,26 +96,29 @@
       position: relative;
 
       &:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
+        background: rgba(139, 92, 246, 0.08) !important;
+        border-left-color: rgba(139, 92, 246, 0.4);
       }
 
       &.active {
-        background: rgba(102, 126, 234, 0.15);
-        border-left-color: #667eea;
+        background: rgba(139, 92, 246, 0.15);
+        border-left-color: #8b5cf6;
+        box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.08);
 
         .track-title {
-          color: #667eea;
+          color: #7c3aed;
+          font-weight: 600;
         }
 
         .track-number {
-          color: #667eea;
+          color: #7c3aed;
           font-weight: 600;
         }
       }
 
       .track-number {
         font-size: 16px;
-        color: rgba(255, 255, 255, 0.5);
+        color: #94a3b8;
         min-width: 35px;
         text-align: center;
         font-weight: 500;
@@ -104,16 +131,17 @@
         .track-title {
           font-size: 16px;
           font-weight: 500;
-          color: #ffffff;
+          color: #1e293b;
           margin-bottom: 0.4rem;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          transition: color 0.3s ease;
         }
 
         .track-artist {
           font-size: 14px;
-          color: rgba(255, 255, 255, 0.6);
+          color: #64748b;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -122,7 +150,7 @@
 
       .track-duration {
         font-size: 14px;
-        color: rgba(255, 255, 255, 0.5);
+        color: #94a3b8;
         font-variant-numeric: tabular-nums;
         margin-right: 1rem;
       }
@@ -136,9 +164,10 @@
         span {
           width: 3px;
           height: 100%;
-          background: #667eea;
+          background: #8b5cf6;
           border-radius: 2px;
           transform-origin: center;
+          box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
         }
       }
     }
@@ -203,5 +232,3 @@
     }
   }
 }
-
-

@@ -20,6 +20,7 @@ const MusicPlayer = ({
                        currentAlbum,
                        currentFormat,
                        albums,
+                       playMode,
                        onPlayPause,
                        onPrevious,
                        onNext,
@@ -29,6 +30,7 @@ const MusicPlayer = ({
                        onVolumeMouseDown,
                        onAlbumChange,
                        onFormatChange,
+                       onTogglePlayMode,
                        formatTime,
                        progressBarRef,
                        volumeBarRef,
@@ -257,6 +259,25 @@ const MusicPlayer = ({
           title={currentFormat === 'mp3' ? '切换到无损' : '切换到MP3'}
         >
           <span className="format-text">{currentFormat.toUpperCase()}</span>
+        </motion.button>
+
+        {/* 播放模式切换按钮 */}
+        <motion.button
+          className="control-btn play-mode-btn"
+          onClick={onTogglePlayMode}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          title={
+            playMode === 'list-loop' ? '列表循环' :
+            playMode === 'single-loop' ? '单曲循环' :
+            '随机播放'
+          }
+        >
+          <span className="play-mode-icon">
+            {playMode === 'list-loop' ? '🔁' :
+             playMode === 'single-loop' ? '🔂' :
+             '🔀'}
+          </span>
         </motion.button>
 
         {/* 音量控制 */}

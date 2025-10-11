@@ -458,6 +458,41 @@
       }
     }
 
+    .play-mode-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      padding: 0.5rem 0.75rem;
+      background: linear-gradient(135deg, rgba(251, 146, 60, 0.1) 0%, rgba(249, 115, 22, 0.15) 100%);
+      border: 1px solid rgba(251, 146, 60, 0.3);
+      border-radius: 8px;
+      min-width: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      outline: none;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(249, 115, 22, 0.25) 100%);
+        border-color: rgba(251, 146, 60, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(251, 146, 60, 0.2);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      .play-mode-icon {
+        display: block;
+        line-height: 1;
+        filter: drop-shadow(0 1px 2px rgba(249, 115, 22, 0.3));
+      }
+    }
+
     // 音量控制
     .volume-section {
       display: flex;

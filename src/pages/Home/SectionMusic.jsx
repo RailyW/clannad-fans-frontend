@@ -21,6 +21,7 @@ const SectionMusic = () => {
   const [playlist, setPlaylist] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
+  const [playMode, setPlayMode] = useState('list-loop'); // 'list-loop' | 'single-loop' | 'random'
 
   const progressBarRef = useRef(null);
   const volumeBarRef = useRef(null);
@@ -29,6 +30,7 @@ const SectionMusic = () => {
   const wasPlayingRef = useRef(false); // 保存切换格式前的播放状态
   const savedTrackRef = useRef(0); // 保存切换格式前的曲目索引
   const isFormatChangingRef = useRef(false); // 标记是否正在切换格式
+  const handleNextRef = useRef(null); // 保存最新的 handleNext 函数引用
 
   // 可用的专辑列表
   const albums = [
@@ -192,7 +194,11 @@ const SectionMusic = () => {
       });
 
       audioRef.current.addEventListener('ended', () => {
-        handleNext();
+        // 使用 ref 中存储的最新 handleNext 函数
+        if (handleNextRef.current) {
+          console.log('[SectionMusic] Audio ended, calling handleNext');
+          handleNextRef.current();
+        }
       });
 
       audioRef.current.addEventListener('error', (e) => {
@@ -268,14 +274,6 @@ const SectionMusic = () => {
     }
   }, [volume]);
 
-  // 下一曲
-  const handleNext = useCallback(() => {
-    setCurrentTrack((prev) => (prev + 1) % playlist.length);
-    setCurrentTime(0);
-    savedTimeRef.current = 0; // 清空保存的时间
-    setIsPlaying(true);
-  }, [playlist.length]);
-
   // 格式化时间
   const formatTime = (seconds) => {
     if (!seconds || isNaN(seconds)) return '0:00';
@@ -296,6 +294,49 @@ const SectionMusic = () => {
     savedTimeRef.current = 0; // 清空保存的时间
     setIsPlaying(true);
   };
+
+  // 根据播放模式处理下一曲逻辑
+  const handleNext = useCallback(() => {
+    if (playlist.length === 0) return;
+
+    if (playMode === 'single-loop') {
+      // 单曲循环：重新播放当前曲目
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        setCurrentTime(0);
+        setIsPlaying(true);
+        audioRef.current.play().catch(err => {
+          console.error('Play failed:', err);
+          setIsPlaying(false);
+        });
+      }
+    } else if (playMode === 'random') {
+      // 随机播放：随机选择一首歌（避免选到当前正在播放的）
+      let randomIndex;
+      if (playlist.length > 1) {
+        do {
+          randomIndex = Math.floor(Math.random() * playlist.length);
+        } while (randomIndex === currentTrack);
+      } else {
+        randomIndex = 0;
+      }
+      setCurrentTrack(randomIndex);
+      setCurrentTime(0);
+      savedTimeRef.current = 0;
+      setIsPlaying(true);
+    } else {
+      // 列表循环：播放下一首
+      setCurrentTrack((prev) => (prev + 1) % playlist.length);
+      setCurrentTime(0);
+      savedTimeRef.current = 0;
+      setIsPlaying(true);
+    }
+  }, [playMode, playlist.length, currentTrack]);
+
+  // 将最新的 handleNext 存储到 ref 中，供 ended 事件监听器使用
+  useEffect(() => {
+    handleNextRef.current = handleNext;
+  }, [handleNext]);
 
   // 进度条点击
   const handleProgressClick = (e) => {
@@ -434,6 +475,15 @@ const SectionMusic = () => {
     setCurrentFormat(format);
   };
 
+  // 切换播放模式
+  const togglePlayMode = () => {
+    setPlayMode((prevMode) => {
+      if (prevMode === 'list-loop') return 'single-loop';
+      if (prevMode === 'single-loop') return 'random';
+      return 'list-loop';
+    });
+  };
+
   if (loading) {
     return (
       <div className="section-music">
@@ -453,6 +503,7 @@ const SectionMusic = () => {
         currentAlbum={currentAlbum}
         currentFormat={currentFormat}
         albums={albums}
+        playMode={playMode}
         onPlayPause={togglePlay}
         onPrevious={handlePrevious}
         onNext={handleNext}
@@ -462,6 +513,7 @@ const SectionMusic = () => {
         onVolumeMouseDown={handleVolumeMouseDown}
         onAlbumChange={handleAlbumChange}
         onFormatChange={handleFormatChange}
+        onTogglePlayMode={togglePlayMode}
         formatTime={formatTime}
         progressBarRef={progressBarRef}
         volumeBarRef={volumeBarRef}

@@ -242,16 +242,15 @@ const SectionMusic = () => {
         setCurrentTime(0);
       }
 
+      // 新歌曲加载后，如果当前是播放状态，则自动播放
       if (isPlaying) {
         audioRef.current.play().catch(err => {
           console.error('Play failed:', err);
           setIsPlaying(false);
         });
-      } else {
-        audioRef.current.pause();
       }
     }
-  }, [currentSong.url, volume]);
+  }, [currentSong.url]);
 
   // 更新播放状态
   useEffect(() => {

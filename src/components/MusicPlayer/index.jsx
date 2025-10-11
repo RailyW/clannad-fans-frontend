@@ -7,6 +7,7 @@ import {
   StepForwardOutlined,
   SoundOutlined,
   AppstoreOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
 import './style.less';
 
@@ -46,7 +47,7 @@ const MusicPlayer = ({
   }, [rotation]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && !isAudioLoading) {
       const startTime = Date.now();
       const startRotation = rotationRef.current;
 
@@ -57,7 +58,7 @@ const MusicPlayer = ({
 
       return () => clearInterval(interval);
     }
-  }, [isPlaying]);
+  }, [isPlaying, isAudioLoading]);
 
   // 点击外部关闭下拉框
   useEffect(() => {
@@ -147,11 +148,11 @@ const MusicPlayer = ({
       <motion.div
         className="album-cover-wrapper"
         animate={{
-          rotate: isPlaying ? rotation + 360 : rotation,
-          scale: isPlaying ? 1.05 : 1
+          rotate: (isPlaying && !isAudioLoading) ? rotation + 360 : rotation,
+          scale: (isPlaying && !isAudioLoading) ? 1.05 : 1
         }}
         transition={{
-          rotate: isPlaying ? { duration: 20, repeat: Infinity, ease: "linear" } : { duration: 0 },
+          rotate: (isPlaying && !isAudioLoading) ? { duration: 20, repeat: Infinity, ease: "linear" } : { duration: 0 },
           scale: { duration: 0.3 }
         }}
       >
@@ -220,12 +221,19 @@ const MusicPlayer = ({
         </motion.button>
 
         <motion.button
-          className="control-btn play-btn"
+          className={`control-btn play-btn ${isAudioLoading ? 'loading' : ''}`}
           onClick={onPlayPause}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: isAudioLoading ? 1 : 1.1 }}
+          whileTap={{ scale: isAudioLoading ? 1 : 0.9 }}
+          disabled={isAudioLoading}
         >
-          {isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
+          {isAudioLoading ? (
+            <LoadingOutlined spin />
+          ) : isPlaying ? (
+            <PauseCircleOutlined />
+          ) : (
+            <PlayCircleOutlined />
+          )}
         </motion.button>
 
         <motion.button
@@ -269,20 +277,6 @@ const MusicPlayer = ({
           <span className="volume-display">{volume}%</span>
         </div>
       </div>
-
-      {/* 加载提示 */}
-      {isAudioLoading && (
-        <motion.div
-          className="loading-indicator"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="spinner" />
-          <span className="loading-text">加载中...</span>
-        </motion.div>
-      )}
     </motion.div>
   );
 };

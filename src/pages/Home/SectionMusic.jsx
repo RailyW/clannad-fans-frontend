@@ -11,6 +11,8 @@ const SectionMusic = () => {
   const [volume, setVolume] = useState(70);
   const [currentTrack, setCurrentTrack] = useState(0);
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isDraggingProgress, setIsDraggingProgress] = useState(false);
+  const [isDraggingVolume, setIsDraggingVolume] = useState(false);
   const progressBarRef = useRef(null);
   const volumeBarRef = useRef(null);
 
@@ -113,21 +115,84 @@ const SectionMusic = () => {
 
   // 进度条点击
   const handleProgressClick = (e) => {
-    if (progressBarRef.current) {
+    if (progressBarRef.current && !isDraggingProgress) {
       const rect = progressBarRef.current.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       setCurrentTime(percent * duration);
     }
   };
 
-  // 音量调节
+  // 进度条拖动开始
+  const handleProgressMouseDown = (e) => {
+    setIsDraggingProgress(true);
+    handleProgressClick(e);
+  };
+
+  // 进度条拖动中
+  const handleProgressMouseMove = useCallback((e) => {
+    if (isDraggingProgress && progressBarRef.current) {
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      setCurrentTime(percent * duration);
+    }
+  }, [isDraggingProgress, duration]);
+
+  // 进度条拖动结束
+  const handleProgressMouseUp = useCallback(() => {
+    setIsDraggingProgress(false);
+  }, []);
+
+  // 音量调节点击
   const handleVolumeClick = (e) => {
-    if (volumeBarRef.current) {
+    if (volumeBarRef.current && !isDraggingVolume) {
       const rect = volumeBarRef.current.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
       setVolume(Math.round(percent * 100));
     }
   };
+
+  // 音量拖动开始
+  const handleVolumeMouseDown = (e) => {
+    setIsDraggingVolume(true);
+    handleVolumeClick(e);
+  };
+
+  // 音量拖动中
+  const handleVolumeMouseMove = useCallback((e) => {
+    if (isDraggingVolume && volumeBarRef.current) {
+      const rect = volumeBarRef.current.getBoundingClientRect();
+      const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      setVolume(Math.round(percent * 100));
+    }
+  }, [isDraggingVolume]);
+
+  // 音量拖动结束
+  const handleVolumeMouseUp = useCallback(() => {
+    setIsDraggingVolume(false);
+  }, []);
+
+  // 监听全局鼠标事件
+  useEffect(() => {
+    if (isDraggingProgress) {
+      document.addEventListener('mousemove', handleProgressMouseMove);
+      document.addEventListener('mouseup', handleProgressMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleProgressMouseMove);
+        document.removeEventListener('mouseup', handleProgressMouseUp);
+      };
+    }
+  }, [isDraggingProgress, handleProgressMouseMove, handleProgressMouseUp]);
+
+  useEffect(() => {
+    if (isDraggingVolume) {
+      document.addEventListener('mousemove', handleVolumeMouseMove);
+      document.addEventListener('mouseup', handleVolumeMouseUp);
+      return () => {
+        document.removeEventListener('mousemove', handleVolumeMouseMove);
+        document.removeEventListener('mouseup', handleVolumeMouseUp);
+      };
+    }
+  }, [isDraggingVolume, handleVolumeMouseMove, handleVolumeMouseUp]);
 
   // 选择曲目
   const selectTrack = (index) => {
@@ -153,10 +218,14 @@ const SectionMusic = () => {
         onPlayPause={togglePlay}
         onPrevious={handlePrevious}
         onNext={handleNext}
-        onProgressChange={handleProgressClick}
-        onVolumeChange={handleVolumeClick}
+        onProgressClick={handleProgressClick}
+        onProgressMouseDown={handleProgressMouseDown}
+        onVolumeClick={handleVolumeClick}
+        onVolumeMouseDown={handleVolumeMouseDown}
         onFavoriteToggle={toggleFavorite}
         formatTime={formatTime}
+        progressBarRef={progressBarRef}
+        volumeBarRef={volumeBarRef}
       />
 
       <PlaylistPanel

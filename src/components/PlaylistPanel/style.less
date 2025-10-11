@@ -4,10 +4,10 @@
   border-radius: 30px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
-    0 8px 32px rgba(139, 92, 246, 0.1),
-    0 0 0 1px rgba(139, 92, 246, 0.15),
+    0 8px 32px rgba(251, 146, 60, 0.1),
+    0 0 0 1px rgba(251, 146, 60, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(251, 146, 60, 0.2);
   overflow: hidden;
   height: 90vh;
   max-height: 800px;
@@ -23,14 +23,14 @@
     left: 0;
     right: 0;
     height: 120px;
-    background: radial-gradient(ellipse at top, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at top, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
 
   .playlist-header {
     padding: 2rem 2.5rem;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+    border-bottom: 1px solid rgba(251, 146, 60, 0.15);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -51,11 +51,11 @@
     .playlist-count {
       font-size: 14px;
       color: #1e293b;
-      background: rgba(139, 92, 246, 0.12);
+      background: rgba(251, 146, 60, 0.12);
       padding: 0.5rem 1rem;
       border-radius: 20px;
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      box-shadow: 0 2px 8px rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(251, 146, 60, 0.2);
+      box-shadow: 0 2px 8px rgba(251, 146, 60, 0.1);
       font-weight: 500;
     }
   }
@@ -72,16 +72,16 @@
     }
 
     &::-webkit-scrollbar-track {
-      background: rgba(139, 92, 246, 0.05);
+      background: rgba(251, 146, 60, 0.05);
       margin: 0.5rem 0;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: rgba(139, 92, 246, 0.3);
+      background: rgba(251, 146, 60, 0.3);
       border-radius: 4px;
 
       &:hover {
-        background: rgba(139, 92, 246, 0.5);
+        background: rgba(251, 146, 60, 0.5);
       }
     }
 
@@ -96,22 +96,22 @@
       position: relative;
 
       &:hover {
-        background: rgba(139, 92, 246, 0.08) !important;
-        border-left-color: rgba(139, 92, 246, 0.4);
+        background: rgba(251, 146, 60, 0.08) !important;
+        border-left-color: rgba(251, 146, 60, 0.4);
       }
 
       &.active {
-        background: rgba(139, 92, 246, 0.15);
-        border-left-color: #8b5cf6;
-        box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.08);
+        background: rgba(251, 146, 60, 0.15);
+        border-left-color: #f97316;
+        box-shadow: inset 0 0 20px rgba(251, 146, 60, 0.08);
 
         .track-title {
-          color: #7c3aed;
+          color: #ea580c;
           font-weight: 600;
         }
 
         .track-number {
-          color: #7c3aed;
+          color: #ea580c;
           font-weight: 600;
         }
       }
@@ -164,10 +164,10 @@
         span {
           width: 3px;
           height: 100%;
-          background: #8b5cf6;
+          background: #f97316;
           border-radius: 2px;
           transform-origin: center;
-          box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+          box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
         }
       }
     }

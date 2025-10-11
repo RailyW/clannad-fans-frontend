@@ -20,10 +20,14 @@ const MusicPlayer = ({
                        onPlayPause,
                        onPrevious,
                        onNext,
-                       onProgressChange,
-                       onVolumeChange,
+                       onProgressClick,
+                       onProgressMouseDown,
+                       onVolumeClick,
+                       onVolumeMouseDown,
                        onFavoriteToggle,
                        formatTime,
+                       progressBarRef,
+                       volumeBarRef,
                      }) => {
   return (
     <motion.div
@@ -83,20 +87,16 @@ const MusicPlayer = ({
       <div className="progress-section">
         <span className="time-display">{formatTime(currentTime)}</span>
         <div
+          ref={progressBarRef}
           className="progress-bar"
-          onClick={onProgressChange}
+          onClick={onProgressClick}
+          onMouseDown={onProgressMouseDown}
         >
           <motion.div
             className="progress-fill"
             initial={{ width: 0 }}
             animate={{ width: `${(currentTime / duration) * 100}%` }}
             transition={{ duration: 0.1 }}
-          />
-          <motion.div
-            className="progress-thumb"
-            style={{ left: `${(currentTime / duration) * 100}%` }}
-            whileHover={{ scale: 1.3 }}
-            whileTap={{ scale: 0.9 }}
           />
         </div>
         <span className="time-display">{formatTime(duration)}</span>
@@ -145,19 +145,15 @@ const MusicPlayer = ({
       <div className="volume-section">
         <SoundOutlined className="volume-icon" />
         <div
+          ref={volumeBarRef}
           className="volume-bar"
-          onClick={onVolumeChange}
+          onClick={onVolumeClick}
+          onMouseDown={onVolumeMouseDown}
         >
           <motion.div
             className="volume-fill"
             animate={{ width: `${volume}%` }}
             transition={{ duration: 0.1 }}
-          />
-          <motion.div
-            className="volume-thumb"
-            style={{ left: `${volume}%` }}
-            whileHover={{ scale: 1.3 }}
-            whileTap={{ scale: 0.9 }}
           />
         </div>
         <span className="volume-display">{volume}%</span>

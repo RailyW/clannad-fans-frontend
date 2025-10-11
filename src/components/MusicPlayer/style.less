@@ -5,10 +5,10 @@
   padding: 3rem 2.5rem;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
-    0 8px 32px rgba(139, 92, 246, 0.1),
-    0 0 0 1px rgba(139, 92, 246, 0.15),
+    0 8px 32px rgba(251, 146, 60, 0.1),
+    0 0 0 1px rgba(251, 146, 60, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(251, 146, 60, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,7 +27,7 @@
     transform: translateX(-50%);
     width: 60%;
     height: 100px;
-    background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(251, 146, 60, 0.08) 0%, transparent 70%);
     pointer-events: none;
   }
 
@@ -153,47 +153,35 @@
       color: #64748b;
       min-width: 40px;
       font-variant-numeric: tabular-nums;
+      user-select: none;
     }
 
     .progress-bar {
       flex: 1;
       height: 6px;
-      background: rgba(139, 92, 246, 0.15);
+      background: rgba(251, 146, 60, 0.15);
       border-radius: 10px;
       position: relative;
       cursor: pointer;
-      overflow: visible;
+      overflow: hidden;
       transition: all 0.3s ease;
+      user-select: none;
 
       &:hover {
         height: 8px;
+      }
 
-        .progress-thumb {
-          opacity: 1;
-          transform: translateX(-50%) scale(1);
-        }
+      &:active {
+        height: 8px;
       }
 
       .progress-fill {
         position: absolute;
         height: 100%;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
         border-radius: 10px;
         transition: width 0.1s linear;
-      }
-
-      .progress-thumb {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%) translateX(-50%) scale(0);
-        width: 16px;
-        height: 16px;
-        background: #8b5cf6;
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        cursor: pointer;
+        pointer-events: none;
       }
     }
   }
@@ -219,17 +207,17 @@
       outline: none;
 
       &:hover {
-        color: #8b5cf6;
-        filter: drop-shadow(0 2px 6px rgba(139, 92, 246, 0.3));
+        color: #f97316;
+        filter: drop-shadow(0 2px 6px rgba(249, 115, 22, 0.3));
       }
 
       &.play-btn {
         font-size: 52px;
-        color: #8b5cf6;
-        filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.3));
+        color: #f97316;
+        filter: drop-shadow(0 4px 12px rgba(249, 115, 22, 0.3));
 
         &:hover {
-          filter: drop-shadow(0 4px 16px rgba(139, 92, 246, 0.5));
+          filter: drop-shadow(0 4px 16px rgba(249, 115, 22, 0.5));
         }
       }
 
@@ -257,43 +245,33 @@
     .volume-icon {
       font-size: 18px;
       color: #64748b;
+      user-select: none;
     }
 
     .volume-bar {
       flex: 1;
       height: 5px;
-      background: rgba(139, 92, 246, 0.15);
+      background: rgba(251, 146, 60, 0.15);
       border-radius: 10px;
       position: relative;
       cursor: pointer;
-      overflow: visible;
+      overflow: hidden;
+      user-select: none;
 
       &:hover {
-        .volume-thumb {
-          opacity: 1;
-          transform: translateX(-50%) scale(1);
-        }
+        height: 6px;
+      }
+
+      &:active {
+        height: 6px;
       }
 
       .volume-fill {
         position: absolute;
         height: 100%;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #fb923c 0%, #f97316 100%);
         border-radius: 10px;
-      }
-
-      .volume-thumb {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%) translateX(-50%) scale(0);
-        width: 14px;
-        height: 14px;
-        background: #8b5cf6;
-        border-radius: 50%;
-        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        cursor: pointer;
+        pointer-events: none;
       }
     }
 
@@ -303,6 +281,7 @@
       min-width: 35px;
       text-align: right;
       font-variant-numeric: tabular-nums;
+      user-select: none;
     }
   }
 }

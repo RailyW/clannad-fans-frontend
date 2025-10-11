@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import MusicPlayer from '../../components/MusicPlayer/index.jsx';
 import PlaylistPanel from '../../components/PlaylistPanel/index.jsx';
 import { apiService, fileService } from '../../services/api.js';
+import musicPreloader from '../../utils/musicPreloader.js';
 import './style.less';
 import './SectionMusic.less';
 
@@ -120,6 +121,31 @@ const SectionMusic = () => {
     cover: null,
   };
 
+  // 预加载当前和下一首歌曲
+  useEffect(() => {
+    if (playlist.length === 0 || !currentSong.url) return;
+
+    const preloadCurrentAndNext = async () => {
+      try {
+        // 1. 高优先级：预加载当前歌曲（完整下载）
+        console.log('[SectionMusic] Preloading current track:', currentSong.title);
+        await musicPreloader.preload(currentSong.url, true);
+
+        // 2. 低优先级：预加载下一首歌曲（后台）
+        const nextTrackIndex = (currentTrack + 1) % playlist.length;
+        const nextSong = playlist[nextTrackIndex];
+        if (nextSong && nextSong.url) {
+          console.log('[SectionMusic] Preloading next track:', nextSong.title);
+          musicPreloader.preloadNext(nextSong.url);
+        }
+      } catch (error) {
+        console.error('[SectionMusic] Preload failed:', error);
+      }
+    };
+
+    preloadCurrentAndNext();
+  }, [currentTrack, playlist, currentSong.url, currentSong.title]);
+
   // 初始化音频元素
   useEffect(() => {
     if (!audioRef.current) {
@@ -195,7 +221,13 @@ const SectionMusic = () => {
   // 更新音频源和播放状态
   useEffect(() => {
     if (audioRef.current && currentSong.url) {
-      audioRef.current.src = currentSong.url;
+      // 使用缓存的 URL（如果已加载）或原始 URL
+      const audioUrl = musicPreloader.getCachedUrl(currentSong.url);
+      const isCached = musicPreloader.isCached(currentSong.url);
+
+      console.log(`[SectionMusic] Loading track: ${currentSong.title}, cached: ${isCached}`);
+
+      audioRef.current.src = audioUrl;
       audioRef.current.volume = volume / 100;
 
       // 如果不是切换格式导致的URL变化，重置播放位置
@@ -213,7 +245,7 @@ const SectionMusic = () => {
         audioRef.current.pause();
       }
     }
-  }, [currentSong.url]);
+  }, [currentSong.url, volume]);
 
   // 更新播放状态
   useEffect(() => {

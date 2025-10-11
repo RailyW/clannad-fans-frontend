@@ -26,7 +26,8 @@ const IntroOverlay = ({ onComplete }) => {
           'rgba(255, 255, 255, 1)', // 1-2s: 变白色
           'rgba(255, 255, 255, 1)', // 2s: 白色保持
         ],
-        opacity: [1, 1, 1, 0] // 2-3s 最后1秒淡出
+        opacity: [1, 1, 1, 0], // 2-3s 最后1秒淡出
+        pointerEvents: ['auto', 'auto', 'auto', 'none'] // 2秒后禁用交互阻挡
       }}
       transition={{
         duration: 3,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import './SectionWelcome.less';
-import SnowEffect from '../../components/SnowEffect/index.jsx';
+import SnowEffect from '../../../../components/SnowEffect/index.jsx';
 
 const COLUMN_TEXTS = [
   '让我带你去吧，',

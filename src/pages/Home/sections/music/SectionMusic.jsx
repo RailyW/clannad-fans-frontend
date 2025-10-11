@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import MusicPlayer from '../../components/MusicPlayer/index.jsx';
-import PlaylistPanel from '../../components/PlaylistPanel/index.jsx';
-import { apiService, fileService } from '../../services/api.js';
-import musicPreloader from '../../utils/musicPreloader.js';
-import './style.less';
+import MusicPlayer from '../../../../components/MusicPlayer/index.jsx';
+import PlaylistPanel from '../../../../components/PlaylistPanel/index.jsx';
+import { apiService, fileService } from '../../../../services/api.js';
+import musicPreloader from '../../../../utils/musicPreloader.js';
+import '../../style.less';
 import './SectionMusic.less';
 
 const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {

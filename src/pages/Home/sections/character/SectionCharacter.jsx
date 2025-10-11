@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import './SectionCharacter.less';
-import CharacterCarousel from '../../components/CharacterCarousel/index.jsx';
-import CharacterCard from '../../components/CharacterCard/index.jsx';
-import TypewriterText from '../../components/TypewriterText/index.jsx';
-import { characters } from './data/CharacterInfo.js';
+import CharacterCarousel from '../../../../components/CharacterCarousel/index.jsx';
+import CharacterCard from '../../../../components/CharacterCard/index.jsx';
+import TypewriterText from '../../../../components/TypewriterText/index.jsx';
+import { characters } from '../../data/CharacterInfo.js';
 
 const SectionCharacter = () => {
   // 状态现在可以安全地保存在组件内部，因为组件不会被卸载

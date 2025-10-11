@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import './style.less';
-import SectionWelcome from "./SectionWelcome.jsx";
-import SectionAbout from "./SectionAbout.jsx";
-import SectionMusic from "./SectionMusic.jsx";
-import SectionAlbum from "./SectionAlbum.jsx";
-import SectionCharacter from "./SectionCharacter.jsx";
+import SectionWelcome from "./sections/welcome/SectionWelcome.jsx";
+import SectionAbout from "./sections/about/SectionAbout.jsx";
+import SectionMusic from "./sections/music/SectionMusic.jsx";
+import SectionAlbum from "./sections/album/SectionAlbum.jsx";
+import SectionCharacter from "./sections/character/SectionCharacter.jsx";
 import { pageBackgrounds } from './data/HomeBackground.js';
 import TopNavigation from "../../components/TopNavigation/index.jsx";
 import IntroOverlay from "../../components/IntroOverlay/index.jsx";

@@ -31,6 +31,10 @@ const SectionMusic = () => {
   const savedTrackRef = useRef(0); // 保存切换格式前的曲目索引
   const isFormatChangingRef = useRef(false); // 标记是否正在切换格式
   const handleNextRef = useRef(null); // 保存最新的 handleNext 函数引用
+  const loadingTimeoutRef = useRef(null); // loading状态延迟显示的定时器
+  const loadingStartTimeRef = useRef(0); // loading开始显示的时间
+  const isLoadingVisibleRef = useRef(false); // loading是否已经显示
+  const playPauseDebounceRef = useRef(null); // 播放/暂停防抖定时器
 
   // 可用的专辑列表
   const albums = [
@@ -153,14 +157,48 @@ const SectionMusic = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio();
 
-      // 音频加载开始
+      // 音频加载开始 - 延迟显示loading
       audioRef.current.addEventListener('loadstart', () => {
-        setIsAudioLoading(true);
+        // 清除之前的定时器
+        if (loadingTimeoutRef.current) {
+          clearTimeout(loadingTimeoutRef.current);
+          loadingTimeoutRef.current = null;
+        }
+
+        // 延迟200ms后显示loading，避免快速加载时的闪烁
+        loadingTimeoutRef.current = setTimeout(() => {
+          setIsAudioLoading(true);
+          loadingStartTimeRef.current = Date.now();
+          isLoadingVisibleRef.current = true;
+        }, 200);
       });
 
-      // 音频可以播放
+      // 音频可以播放 - 确保最小显示时间
       audioRef.current.addEventListener('canplay', () => {
-        setIsAudioLoading(false);
+        const hideLoading = () => {
+          if (loadingTimeoutRef.current) {
+            clearTimeout(loadingTimeoutRef.current);
+            loadingTimeoutRef.current = null;
+          }
+          setIsAudioLoading(false);
+          isLoadingVisibleRef.current = false;
+        };
+
+        // 如果loading还未显示，取消显示
+        if (!isLoadingVisibleRef.current) {
+          hideLoading();
+          return;
+        }
+
+        // 如果loading已显示，确保至少显示300ms
+        const loadingDuration = Date.now() - loadingStartTimeRef.current;
+        const minDisplayTime = 300;
+
+        if (loadingDuration < minDisplayTime) {
+          setTimeout(hideLoading, minDisplayTime - loadingDuration);
+        } else {
+          hideLoading();
+        }
       });
 
       // 音频元数据加载完成
@@ -184,7 +222,30 @@ const SectionMusic = () => {
           setIsPlaying(true);
           wasPlayingRef.current = false;
         }
-        setIsAudioLoading(false);
+
+        // 确保最小显示时间后隐藏loading
+        const hideLoading = () => {
+          if (loadingTimeoutRef.current) {
+            clearTimeout(loadingTimeoutRef.current);
+            loadingTimeoutRef.current = null;
+          }
+          setIsAudioLoading(false);
+          isLoadingVisibleRef.current = false;
+        };
+
+        if (!isLoadingVisibleRef.current) {
+          hideLoading();
+          return;
+        }
+
+        const loadingDuration = Date.now() - loadingStartTimeRef.current;
+        const minDisplayTime = 300;
+
+        if (loadingDuration < minDisplayTime) {
+          setTimeout(hideLoading, minDisplayTime - loadingDuration);
+        } else {
+          hideLoading();
+        }
       });
 
       audioRef.current.addEventListener('timeupdate', () => {
@@ -203,23 +264,65 @@ const SectionMusic = () => {
 
       audioRef.current.addEventListener('error', (e) => {
         console.error('Audio playback error:', e);
+        // 出错时立即隐藏loading
+        if (loadingTimeoutRef.current) {
+          clearTimeout(loadingTimeoutRef.current);
+          loadingTimeoutRef.current = null;
+        }
         setIsAudioLoading(false);
+        isLoadingVisibleRef.current = false;
       });
 
-      // 等待数据时显示加载状态
+      // 等待数据时显示加载状态 - 延迟显示
       audioRef.current.addEventListener('waiting', () => {
-        setIsAudioLoading(true);
+        if (loadingTimeoutRef.current) {
+          clearTimeout(loadingTimeoutRef.current);
+        }
+
+        loadingTimeoutRef.current = setTimeout(() => {
+          setIsAudioLoading(true);
+          loadingStartTimeRef.current = Date.now();
+          isLoadingVisibleRef.current = true;
+        }, 200);
       });
 
-      // 数据到达，可以继续播放
+      // 数据到达，可以继续播放 - 确保最小显示时间
       audioRef.current.addEventListener('playing', () => {
-        setIsAudioLoading(false);
+        const hideLoading = () => {
+          if (loadingTimeoutRef.current) {
+            clearTimeout(loadingTimeoutRef.current);
+            loadingTimeoutRef.current = null;
+          }
+          setIsAudioLoading(false);
+          isLoadingVisibleRef.current = false;
+        };
+
+        if (!isLoadingVisibleRef.current) {
+          hideLoading();
+          return;
+        }
+
+        const loadingDuration = Date.now() - loadingStartTimeRef.current;
+        const minDisplayTime = 300;
+
+        if (loadingDuration < minDisplayTime) {
+          setTimeout(hideLoading, minDisplayTime - loadingDuration);
+        } else {
+          hideLoading();
+        }
       });
     }
 
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
+      }
+      // 清理定时器
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+      }
+      if (playPauseDebounceRef.current) {
+        clearTimeout(playPauseDebounceRef.current);
       }
     };
   }, []);
@@ -282,9 +385,20 @@ const SectionMusic = () => {
   };
 
   // 播放/暂停
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
+  const togglePlay = useCallback(() => {
+    // 如果在防抖期间，忽略点击
+    if (playPauseDebounceRef.current) {
+      return;
+    }
+
+    // 立即响应用户操作
+    setIsPlaying((prev) => !prev);
+
+    // 设置防抖期，300ms内不响应新的点击
+    playPauseDebounceRef.current = setTimeout(() => {
+      playPauseDebounceRef.current = null;
+    }, 300);
+  }, []);
 
   // 上一曲
   const handlePrevious = () => {

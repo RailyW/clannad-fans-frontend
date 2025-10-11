@@ -474,6 +474,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      color: #f97316;
 
       &:hover {
         background: linear-gradient(135deg, rgba(251, 146, 60, 0.2) 0%, rgba(249, 115, 22, 0.25) 100%);
@@ -487,9 +488,16 @@
       }
 
       .play-mode-icon {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         line-height: 1;
-        filter: drop-shadow(0 1px 2px rgba(249, 115, 22, 0.3));
+
+        svg {
+          width: 20px;
+          height: 20px;
+          stroke-width: 2;
+        }
       }
     }
 

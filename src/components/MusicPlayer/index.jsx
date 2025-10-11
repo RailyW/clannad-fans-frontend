@@ -9,6 +9,7 @@ import {
   AppstoreOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
+import { TbRepeat, TbRepeatOnce, TbArrowsShuffle } from 'react-icons/tb';
 import './style.less';
 
 const MusicPlayer = ({
@@ -274,9 +275,9 @@ const MusicPlayer = ({
           }
         >
           <span className="play-mode-icon">
-            {playMode === 'list-loop' ? '🔁' :
-             playMode === 'single-loop' ? '🔂' :
-             '🔀'}
+            {playMode === 'list-loop' ? <TbRepeat /> :
+             playMode === 'single-loop' ? <TbRepeatOnce /> :
+             <TbArrowsShuffle />}
           </span>
         </motion.button>
 

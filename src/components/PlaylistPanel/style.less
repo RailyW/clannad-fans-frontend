@@ -1,0 +1,207 @@
+.playlist-panel {
+  flex: 0 0 calc(66.667% - 1rem);
+  background: rgba(30, 30, 40, 0.92);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  height: 90vh;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+
+  .playlist-header {
+    padding: 2rem 2.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+
+    h3 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .playlist-count {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+    }
+  }
+
+  .playlist-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem 0;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      margin: 0.5rem 0;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    .playlist-item {
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      position: relative;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08) !important;
+      }
+
+      &.active {
+        background: rgba(102, 126, 234, 0.15);
+        border-left-color: #667eea;
+
+        .track-title {
+          color: #667eea;
+        }
+
+        .track-number {
+          color: #667eea;
+          font-weight: 600;
+        }
+      }
+
+      .track-number {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.5);
+        min-width: 35px;
+        text-align: center;
+        font-weight: 500;
+      }
+
+      .track-info {
+        flex: 1;
+        min-width: 0;
+
+        .track-title {
+          font-size: 16px;
+          font-weight: 500;
+          color: #ffffff;
+          margin-bottom: 0.4rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .track-artist {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.6);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .track-duration {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        font-variant-numeric: tabular-nums;
+        margin-right: 1rem;
+      }
+
+      .playing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        height: 20px;
+
+        span {
+          width: 3px;
+          height: 100%;
+          background: #667eea;
+          border-radius: 2px;
+          transform-origin: center;
+        }
+      }
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 1400px) {
+  .playlist-panel {
+    .playlist-header {
+      padding: 1.8rem 2rem;
+
+      h3 {
+        font-size: 22px;
+      }
+    }
+
+    .playlist-items .playlist-item {
+      padding: 1rem 2rem;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .playlist-panel {
+    flex: 1 1 auto;
+    width: 100%;
+    max-height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .playlist-panel {
+    max-height: 350px;
+
+    .playlist-header {
+      padding: 1.5rem;
+
+      h3 {
+        font-size: 20px;
+      }
+    }
+
+    .playlist-items .playlist-item {
+      padding: 1rem 1.5rem;
+      gap: 1rem;
+
+      .track-number {
+        min-width: 30px;
+        font-size: 14px;
+      }
+
+      .track-info {
+        .track-title {
+          font-size: 15px;
+        }
+
+        .track-artist {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+

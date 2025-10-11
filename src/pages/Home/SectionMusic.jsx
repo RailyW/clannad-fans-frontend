@@ -295,7 +295,31 @@ const SectionMusic = () => {
     setIsPlaying(true);
   };
 
-  // 根据播放模式处理下一曲逻辑
+  // 手动点击下一曲按钮（不受播放模式影响，始终切换到下一首）
+  const handleManualNext = () => {
+    if (playlist.length === 0) return;
+
+    if (playMode === 'random') {
+      // 随机播放：随机选择一首歌（避免选到当前正在播放的）
+      let randomIndex;
+      if (playlist.length > 1) {
+        do {
+          randomIndex = Math.floor(Math.random() * playlist.length);
+        } while (randomIndex === currentTrack);
+      } else {
+        randomIndex = 0;
+      }
+      setCurrentTrack(randomIndex);
+    } else {
+      // 列表循环和单曲循环：都播放下一首
+      setCurrentTrack((prev) => (prev + 1) % playlist.length);
+    }
+    setCurrentTime(0);
+    savedTimeRef.current = 0;
+    setIsPlaying(true);
+  };
+
+  // 根据播放模式处理自动播放结束时的下一曲逻辑
   const handleNext = useCallback(() => {
     if (playlist.length === 0) return;
 
@@ -506,7 +530,7 @@ const SectionMusic = () => {
         playMode={playMode}
         onPlayPause={togglePlay}
         onPrevious={handlePrevious}
-        onNext={handleNext}
+        onNext={handleManualNext}
         onProgressClick={handleProgressClick}
         onProgressMouseDown={handleProgressMouseDown}
         onVolumeClick={handleVolumeClick}

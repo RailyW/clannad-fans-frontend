@@ -208,18 +208,6 @@ const Home = () => {
           </motion.div>
         );
       })}
-
-      {/* 滚动进度条 */}
-      <div className="scroll-progress">
-        <motion.div
-          className="progress-bar"
-          animate={{ width: `${((currentSection + 1) / sections.length) * 100}%` }}
-          transition={{
-            duration: 0.8,
-            ease: [0.645, 0.045, 0.355, 1]
-          }}
-        />
-      </div>
     </div>
   );
 };

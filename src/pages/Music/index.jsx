@@ -1,23 +1,22 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import AlbumSelector from '../../../../components/MusicPlayer/AlbumSelector.jsx';
-import AlbumCover from '../../../../components/MusicPlayer/AlbumCover.jsx';
-import SongInfo from '../../../../components/MusicPlayer/SongInfo.jsx';
-import ProgressBar from '../../../../components/MusicPlayer/ProgressBar.jsx';
-import PlayerControls from '../../../../components/MusicPlayer/PlayerControls.jsx';
-import VolumeControl from '../../../../components/MusicPlayer/VolumeControl.jsx';
-import PlaylistPanel from '../../../../components/PlaylistPanel/index.jsx';
-import useAudioPlayer from '../../../../components/MusicPlayer/useAudioPlayer.js';
-import useProgressBar from '../../../../components/MusicPlayer/useProgressBar.js';
-import useVolumeBar from '../../../../components/MusicPlayer/useVolumeBar.js';
-import useMusicPlaylist from '../../../../components/MusicPlayer/useMusicPlaylist.js';
-import usePlaybackControl from '../../../../components/MusicPlayer/usePlaybackControl.js';
-import musicPreloader from '../../../../utils/musicPreloader.js';
-import '../../style.less';
-import './SectionMusic.less';
-import '../../../../components/MusicPlayer/style.less';
+import AlbumSelector from '../../components/MusicPlayer/AlbumSelector.jsx';
+import AlbumCover from '../../components/MusicPlayer/AlbumCover.jsx';
+import SongInfo from '../../components/MusicPlayer/SongInfo.jsx';
+import ProgressBar from '../../components/MusicPlayer/ProgressBar.jsx';
+import PlayerControls from '../../components/MusicPlayer/PlayerControls.jsx';
+import VolumeControl from '../../components/MusicPlayer/VolumeControl.jsx';
+import PlaylistPanel from '../../components/PlaylistPanel/index.jsx';
+import useAudioPlayer from '../../components/MusicPlayer/useAudioPlayer.js';
+import useProgressBar from '../../components/MusicPlayer/useProgressBar.js';
+import useVolumeBar from '../../components/MusicPlayer/useVolumeBar.js';
+import useMusicPlaylist from '../../components/MusicPlayer/useMusicPlaylist.js';
+import usePlaybackControl from '../../components/MusicPlayer/usePlaybackControl.js';
+import musicPreloader from '../../utils/musicPreloader.js';
+import './style.less';
+import '../../components/MusicPlayer/style.less';
 
-const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {
+const Music = () => {
   const [currentAlbum, setCurrentAlbum] = useState('SteamOST');
   const [currentFormat, setCurrentFormat] = useState('mp3');
   const [playMode, setPlayMode] = useState('list-loop'); // 'list-loop' | 'single-loop' | 'random'
@@ -90,17 +89,17 @@ const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {
 
     const preloadCurrentAndNext = async () => {
       try {
-        console.log('[SectionMusic] Preloading current track:', currentSong.title);
+        console.log('[Music] Preloading current track:', currentSong.title);
         await musicPreloader.preload(currentSong.url, true);
 
         const nextTrackIndex = (currentTrack + 1) % playlist.length;
         const nextSong = playlist[nextTrackIndex];
         if (nextSong && nextSong.url) {
-          console.log('[SectionMusic] Preloading next track:', nextSong.title);
+          console.log('[Music] Preloading next track:', nextSong.title);
           musicPreloader.preloadNext(nextSong.url);
         }
       } catch (error) {
-        console.error('[SectionMusic] Preload failed:', error);
+        console.error('[Music] Preload failed:', error);
       }
     };
 
@@ -145,25 +144,19 @@ const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {
 
   if (loading) {
     return (
-      <div className="section-music">
+      <div className="music-page">
         <div className="loading-message">加载音乐数据中...</div>
       </div>
     );
   }
 
   return (
-    <div className="section-music">
+    <div className="music-page">
       {/* 音乐播放器 - 直接使用子组件组合 */}
       <motion.div
         className="music-player-container"
         initial={{ opacity: 0, x: -50 }}
-        animate={
-          isActive && isFirstVisit
-            ? { opacity: 1, x: 0 }
-            : isActive
-            ? { opacity: 1, x: 0 }
-            : { opacity: 0, x: -50 }
-        }
+        animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <AlbumSelector
@@ -221,11 +214,12 @@ const SectionMusic = ({ isFirstVisit = true, isActive = false }) => {
         isPlaying={isPlaying}
         onSelectTrack={handleSelectTrack}
         formatTime={formatTime}
-        isFirstVisit={isFirstVisit}
-        isActive={isActive}
+        isFirstVisit={true}
+        isActive={true}
       />
     </div>
   );
 };
 
-export default SectionMusic;
+export default Music;
+

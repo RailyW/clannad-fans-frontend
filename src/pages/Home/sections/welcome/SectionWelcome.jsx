@@ -62,6 +62,15 @@ const SectionWelcome = ({ showIntro }) => {
           </motion.div>
         ))}
       </div>
+      <div className="portal-section">
+
+        <iframe
+          src="https://store.steampowered.com/widget/324160/"
+          frameBorder="0"
+          width="600"
+          height="200"
+        />
+      </div>
     </div>
   );
 };

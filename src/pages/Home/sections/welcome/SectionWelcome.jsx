@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
+import { IoMusicalNotes } from 'react-icons/io5';
 import './SectionWelcome.less';
 import SnowEffect from '../../../../components/SnowEffect/index.jsx';
 
@@ -62,8 +63,14 @@ const SectionWelcome = ({ showIntro }) => {
           </motion.div>
         ))}
       </div>
+      {/* 右下角的跳转入口区域 */}
       <div className="portal-section">
-
+        <button className="jump-button">
+          <span className="button-icon">
+            <IoMusicalNotes />
+          </span>
+          <span className="button-text">原声音乐</span>
+        </button>
         <iframe
           src="https://store.steampowered.com/widget/324160/"
           frameBorder="0"

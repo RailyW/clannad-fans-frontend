@@ -15,6 +15,7 @@ const TopNavigation = ({ sections, currentSection, onNavigate }) => {
       <div className="logo-container">
         <GameLogo />
       </div>
+      {/*
       <div className="nav-menu">
         {sections.map((section, index) => (
           <div
@@ -26,6 +27,7 @@ const TopNavigation = ({ sections, currentSection, onNavigate }) => {
           </div>
         ))}
       </div>
+      */}
     </nav>
   );
 };

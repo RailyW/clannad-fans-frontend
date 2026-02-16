@@ -2,8 +2,8 @@ import { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import './style.less';
 import SectionWelcome from "./sections/welcome/SectionWelcome.jsx";
-import SectionAbout from "./sections/about/SectionAbout.jsx";
-import SectionAlbum from "./sections/album/SectionAlbum.jsx";
+// import SectionAbout from "./sections/about/SectionAbout.jsx";
+// import SectionAlbum from "./sections/album/SectionAlbum.jsx";
 import SectionCharacter from "./sections/character/SectionCharacter.jsx";
 import { pageBackgrounds } from './data/HomeBackground.js';
 import TopNavigation from "../../components/TopNavigation/index.jsx";
@@ -19,8 +19,8 @@ const Home = () => {
   const sections = useMemo(() => [
     { id: '首页', component: <SectionWelcome showIntro={showIntro} />, background: pageBackgrounds.welcome },
     { id: '角色', component: <SectionCharacter />, background: pageBackgrounds.character },
-    { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
-    { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
+    // { id: '相册', component: <SectionAlbum />, background: pageBackgrounds.album },
+    // { id: '关于', component: <SectionAbout />, background: pageBackgrounds.about },
   ], [showIntro]);
 
   // 背景切换动画变体

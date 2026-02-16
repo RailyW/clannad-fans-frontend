@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { IoMusicalNotes } from 'react-icons/io5';
 import './SectionWelcome.less';
 import SnowEffect from '../../../../components/SnowEffect/index.jsx';
-import { jumpPage } from '../../../../utils/jumpPage.js';
 
 const COLUMN_TEXTS = [
   '让我带你去吧，',
@@ -18,11 +15,6 @@ let hasAnimated = false;
 const SectionWelcome = ({ showIntro }) => {
   const [showText, setShowText] = useState(false);
   const [shouldPlayAnimation, setShouldPlayAnimation] = useState(false);
-  const navigate = useNavigate();
-
-  const handleMusicClick = () => {
-    jumpPage('/music', navigate);
-  };
 
   useEffect(() => {
     // 如果开场动画还在显示，不做任何事
@@ -72,12 +64,6 @@ const SectionWelcome = ({ showIntro }) => {
       </div>
       {/* 右下角的跳转入口区域 */}
       <div className="portal-section">
-        <button className="jump-button" onClick={handleMusicClick}>
-          <span className="button-icon">
-            <IoMusicalNotes />
-          </span>
-          <span className="button-text">原声音乐</span>
-        </button>
         <iframe
           src="https://store.steampowered.com/widget/324160/"
           frameBorder="0"

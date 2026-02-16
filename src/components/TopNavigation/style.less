@@ -9,10 +9,11 @@
   align-items: center;
   justify-content: center;
   padding: 10px 30px;
-  //background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(2px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  // background: rgba(0, 0, 0, 0.1);
+  // 隐藏顶栏毛玻璃和装饰线条效果（保留左上角 Logo）
+  backdrop-filter: none;
+  border-bottom: none;
+  box-shadow: none;
   pointer-events: none; // 让背景部分不阻挡鼠标事件
 }
 

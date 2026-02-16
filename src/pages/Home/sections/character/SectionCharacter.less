@@ -50,6 +50,19 @@
       background 0.6s ease-in-out,
       box-shadow 0.6s ease-in-out;
 
+    // 角色卡片整体内容不可被光标选中
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    * {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
     // 教师证 - 深蓝色主题
     &[data-card-type='teacher'] {
       border-color: #4169e1 !important;
